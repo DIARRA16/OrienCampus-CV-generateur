@@ -98,7 +98,7 @@
             width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:15px;
         }
         .form-group input:focus, .form-group textarea:focus {
-            border-color:var(--secondary); outline:none; box-shadow:0 0 0 3px rgba(52,152,219,0.08);
+            border-color: var(--secondary); outline:none; box-shadow:0 0 0 3px rgba(52,152,219,0.08);
         }
         .repeatable-list { margin-top:10px; }
         .repeatable-item { background:#fafafa; padding:12px; border-radius:8px; margin-bottom:12px; position:relative; border-left:4px solid var(--secondary); }
@@ -251,7 +251,7 @@
                     </div>
                     <div class="form-group">
                         <label for="poste">Poste visé *</label>
-                        <input type="text" id="poste" required placeholder="Ex: Administrateur Réseaux">
+                        <input type="text" id="poste" required placeholder="Ex: Développeur Web, Enseignant">
                     </div>
                 </div>
 
@@ -288,7 +288,7 @@
                 <h2>Profil / Résumé *</h2>
                 <div class="form-group">
                     <label for="profil">Décrivez-vous en quelques lignes (objectif, forces, expérience clé)</label>
-                    <textarea id="profil" required placeholder="Ex: Ingénieur réseau avec 3 ans d'expérience..."></textarea>
+                    <textarea id="profil" required placeholder="Ex: Ingénieur réseau avec 3 ans d'expérience en gestion de serveurs Linux et sécurité informatique."></textarea>
                 </div>
             </div>
 
@@ -298,16 +298,16 @@
                 <div id="experiences" class="repeatable-list">
                     <div class="repeatable-item">
                         <button type="button" class="remove-item" onclick="removeExperience(this)">×</button>
-                        <div class="form-group"><label>Poste *</label><input type="text" class="exp-poste" required></div>
+                        <div class="form-group"><label>Poste *</label><input type="text" class="exp-poste" required placeholder="Ex: Technicien Informatique"></div>
                         <div class="form-row">
-                            <div class="form-group"><label>Entreprise *</label><input type="text" class="exp-entreprise" required></div>
-                            <div class="form-group"><label>Ville</label><input type="text" class="exp-ville"></div>
+                            <div class="form-group"><label>Entreprise *</label><input type="text" class="exp-entreprise" required placeholder="Nom de l'entreprise"></div>
+                            <div class="form-group"><label>Ville</label><input type="text" class="exp-ville" placeholder="Ex: Ouagadougou"></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group"><label>Début (ex: 2020)</label><input type="text" class="exp-debut"></div>
-                            <div class="form-group"><label>Fin (ex: 2023 ou Présent)</label><input type="text" class="exp-fin"></div>
+                            <div class="form-group"><label>Début (ex: 2020)</label><input type="text" class="exp-debut" placeholder="2020"></div>
+                            <div class="form-group"><label>Fin (ex: 2023 ou Présent)</label><input type="text" class="exp-fin" placeholder="2023"></div>
                         </div>
-                        <div class="form-group"><label>Description</label><textarea class="exp-desc"></textarea></div>
+                        <div class="form-group"><label>Description</label><textarea class="exp-desc" placeholder="Décrivez vos missions et réalisations"></textarea></div>
                     </div>
                 </div>
                 <div style="margin-top:8px;">
@@ -315,25 +315,69 @@
                 </div>
             </div>
 
-            <!-- Formation -->
+            <!-- Formation Scolaire -->
             <div class="form-section">
-                <h2>Formation</h2>
-                <div id="formations" class="repeatable-list">
+                <h2>Formation scolaire (primaire, collège, lycée)</h2>
+                <div id="formations-scolaire" class="repeatable-list">
                     <div class="repeatable-item">
-                        <button type="button" class="remove-item" onclick="removeFormation(this)">×</button>
-                        <div class="form-group"><label>Diplôme *</label><input type="text" class="formation-diplome" required></div>
+                        <button type="button" class="remove-item" onclick="removeFormationScolaire(this)">×</button>
+                        <div class="form-group"><label>Diplôme / Niveau *</label><input type="text" class="formation-diplome" required placeholder="Ex: Brevet, Baccalauréat série C"></div>
                         <div class="form-row">
-                            <div class="form-group"><label>Établissement *</label><input type="text" class="formation-etablissement" required></div>
-                            <div class="form-group"><label>Ville</label><input type="text" class="formation-ville"></div>
+                            <div class="form-group"><label>Établissement *</label><input type="text" class="formation-etablissement" required placeholder="Nom de l'école ou du lycée"></div>
+                            <div class="form-group"><label>Ville</label><input type="text" class="formation-ville" placeholder="Ex: Bobo-Dioulasso"></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group"><label>Début</label><input type="text" class="formation-debut"></div>
-                            <div class="form-group"><label>Fin</label><input type="text" class="formation-fin"></div>
+                            <div class="form-group"><label>Année de début</label><input type="text" class="formation-debut" placeholder="Ex: 2010"></div>
+                            <div class="form-group"><label>Année de fin</label><input type="text" class="formation-fin" placeholder="Ex: 2018"></div>
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:8px;">
-                    <button type="button" class="btn btn-outline" onclick="addFormation()">+ Ajouter une formation</button>
+                    <button type="button" class="btn btn-outline" onclick="addFormationScolaire()">+ Ajouter une formation scolaire</button>
+                </div>
+            </div>
+
+            <!-- Formation Universitaire -->
+            <div class="form-section">
+                <h2>Formation universitaire</h2>
+                <div id="formations-universitaire" class="repeatable-list">
+                    <div class="repeatable-item">
+                        <button type="button" class="remove-item" onclick="removeFormationUniversitaire(this)">×</button>
+                        <div class="form-group"><label>Diplôme *</label><input type="text" class="formation-diplome" required placeholder="Ex: Licence en Informatique, Master en Gestion"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Université / École *</label><input type="text" class="formation-etablissement" required placeholder="Nom de l'université"></div>
+                            <div class="form-group"><label>Ville</label><input type="text" class="formation-ville" placeholder="Ex: Ouagadougou"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Année de début</label><input type="text" class="formation-debut" placeholder="Ex: 2019"></div>
+                            <div class="form-group"><label>Année de fin</label><input type="text" class="formation-fin" placeholder="Ex: 2022"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:8px;">
+                    <button type="button" class="btn btn-outline" onclick="addFormationUniversitaire()">+ Ajouter une formation universitaire</button>
+                </div>
+            </div>
+
+            <!-- Formation Professionnelle -->
+            <div class="form-section">
+                <h2>Formation professionnelle (stages, certifications, etc.)</h2>
+                <div id="formations-professionnelle" class="repeatable-list">
+                    <div class="repeatable-item">
+                        <button type="button" class="remove-item" onclick="removeFormationProfessionnelle(this)">×</button>
+                        <div class="form-group"><label>Intitulé de la formation *</label><input type="text" class="formation-diplome" required placeholder="Ex: Certification Cisco CCNA, Excel avancé"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Organisme / Centre *</label><input type="text" class="formation-etablissement" required placeholder="Nom du centre de formation"></div>
+                            <div class="form-group"><label>Ville</label><input type="text" class="formation-ville" placeholder="Ex: Ouagadougou"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Date / Durée</label><input type="text" class="formation-debut" placeholder="Ex: Juin 2023 (3 semaines)"></div>
+                            <div class="form-group"><label>Attestation / Certification</label><input type="text" class="formation-fin" placeholder="Ex: Oui, avec mention"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:8px;">
+                    <button type="button" class="btn btn-outline" onclick="addFormationProfessionnelle()">+ Ajouter une formation professionnelle</button>
                 </div>
             </div>
 
@@ -342,7 +386,7 @@
                 <h2>Compétences</h2>
                 <div class="form-group">
                     <label>Compétences (séparées par des virgules)</label>
-                    <input type="text" id="competences" placeholder="Ex: Communication, Excel, Python">
+                    <input type="text" id="competences" placeholder="Ex: Communication, Excel, Python, Gestion de projet">
                 </div>
             </div>
 
@@ -443,7 +487,6 @@
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
         const el = document.getElementById(pageId.replace('-page','') + '-page') || document.getElementById(pageId);
-        // support both passing id exactly or with -page suffix
         if (el) el.classList.add('page-active');
         window.scrollTo(0,0);
     }
@@ -453,23 +496,23 @@
         showPage('form-page');
     }
 
-    // Repeatables: Experiences
+    // Repeatables: Expériences
     function addExperience() {
         const container = document.getElementById('experiences');
         const item = document.createElement('div');
         item.className = 'repeatable-item';
         item.innerHTML = `
             <button type="button" class="remove-item" onclick="removeExperience(this)">×</button>
-            <div class="form-group"><label>Poste *</label><input type="text" class="exp-poste" required></div>
+            <div class="form-group"><label>Poste *</label><input type="text" class="exp-poste" required placeholder="Ex: Technicien Informatique"></div>
             <div class="form-row">
-                <div class="form-group"><label>Entreprise *</label><input type="text" class="exp-entreprise" required></div>
-                <div class="form-group"><label>Ville</label><input type="text" class="exp-ville"></div>
+                <div class="form-group"><label>Entreprise *</label><input type="text" class="exp-entreprise" required placeholder="Nom de l'entreprise"></div>
+                <div class="form-group"><label>Ville</label><input type="text" class="exp-ville" placeholder="Ex: Ouagadougou"></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>Début (ex: 2020)</label><input type="text" class="exp-debut"></div>
-                <div class="form-group"><label>Fin (ex: 2023 ou Présent)</label><input type="text" class="exp-fin"></div>
+                <div class="form-group"><label>Début (ex: 2020)</label><input type="text" class="exp-debut" placeholder="2020"></div>
+                <div class="form-group"><label>Fin (ex: 2023 ou Présent)</label><input type="text" class="exp-fin" placeholder="2023"></div>
             </div>
-            <div class="form-group"><label>Description</label><textarea class="exp-desc"></textarea></div>
+            <div class="form-group"><label>Description</label><textarea class="exp-desc" placeholder="Décrivez vos missions et réalisations"></textarea></div>
         `;
         container.appendChild(item);
     }
@@ -482,41 +525,68 @@
         }
     }
 
-    // Repeatables: Formations
-    function addFormation() {
-        const container = document.getElementById('formations');
+    // Fonction utilitaire pour créer un item de formation réutilisable
+    function createFormationItem() {
         const item = document.createElement('div');
         item.className = 'repeatable-item';
         item.innerHTML = `
-            <button type="button" class="remove-item" onclick="removeFormation(this)">×</button>
-            <div class="form-group"><label>Diplôme *</label><input type="text" class="formation-diplome" required></div>
+            <button type="button" class="remove-item" onclick="this.closest('.repeatable-item').remove()">×</button>
+            <div class="form-group"><label>Diplôme / Intitulé *</label><input type="text" class="formation-diplome" required></div>
             <div class="form-row">
-                <div class="form-group"><label>Établissement *</label><input type="text" class="formation-etablissement" required></div>
+                <div class="form-group"><label>Établissement / Organisme *</label><input type="text" class="formation-etablissement" required></div>
                 <div class="form-group"><label>Ville</label><input type="text" class="formation-ville"></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>Début</label><input type="text" class="formation-debut"></div>
-                <div class="form-group"><label>Fin</label><input type="text" class="formation-fin"></div>
+                <div class="form-group"><label>Date / Début</label><input type="text" class="formation-debut"></div>
+                <div class="form-group"><label>Fin / Détails</label><input type="text" class="formation-fin"></div>
             </div>
         `;
-        container.appendChild(item);
-    }
-    function removeFormation(btn) {
-        const items = document.querySelectorAll('#formations .repeatable-item');
-        if (items.length > 1) {
-            btn.closest('.repeatable-item').remove();
-        } else {
-            alert("Vous devez conserver au moins une formation.");
-        }
+        return item;
     }
 
-    // Reset form (simple)
+    // --- Formation Scolaire ---
+    function addFormationScolaire() {
+        document.getElementById('formations-scolaire').appendChild(createFormationItem());
+    }
+    function removeFormationScolaire(btn) {
+        const items = document.querySelectorAll('#formations-scolaire .repeatable-item');
+        if (items.length > 1) btn.closest('.repeatable-item').remove();
+        else alert("Vous devez conserver au moins une formation scolaire.");
+    }
+
+    // --- Formation Universitaire ---
+    function addFormationUniversitaire() {
+        document.getElementById('formations-universitaire').appendChild(createFormationItem());
+    }
+    function removeFormationUniversitaire(btn) {
+        const items = document.querySelectorAll('#formations-universitaire .repeatable-item');
+        if (items.length > 1) btn.closest('.repeatable-item').remove();
+        else alert("Vous devez conserver au moins une formation universitaire.");
+    }
+
+    // --- Formation Professionnelle ---
+    function addFormationProfessionnelle() {
+        document.getElementById('formations-professionnelle').appendChild(createFormationItem());
+    }
+    function removeFormationProfessionnelle(btn) {
+        const items = document.querySelectorAll('#formations-professionnelle .repeatable-item');
+        if (items.length > 1) btn.closest('.repeatable-item').remove();
+        else alert("Vous devez conserver au moins une formation professionnelle.");
+    }
+
+    // Reset form
     function resetForm() {
         if (!confirm('Voulez-vous vraiment effacer tous les champs ?')) return;
         document.getElementById('cv-form').reset();
-        // remove extra repeatables, keep only one of each
-        document.querySelectorAll('#experiences .repeatable-item').forEach((el,i) => { if (i>0) el.remove(); });
-        document.querySelectorAll('#formations .repeatable-item').forEach((el,i) => { if (i>0) el.remove(); });
+        // Réinitialiser les listes répétables
+        const resetRepeatable = (id) => {
+            const container = document.getElementById(id);
+            while (container.children.length > 1) container.removeChild(container.lastElementChild);
+        };
+        resetRepeatable('experiences');
+        resetRepeatable('formations-scolaire');
+        resetRepeatable('formations-universitaire');
+        resetRepeatable('formations-professionnelle');
         window.scrollTo(0,0);
     }
 
@@ -537,6 +607,7 @@
             template: currentTemplate
         };
 
+        // Expériences
         data.experiences = [];
         document.querySelectorAll('#experiences .repeatable-item').forEach(item => {
             const exp = {
@@ -550,17 +621,25 @@
             if (exp.poste || exp.entreprise) data.experiences.push(exp);
         });
 
-        data.formations = [];
-        document.querySelectorAll('#formations .repeatable-item').forEach(item => {
-            const f = {
-                diplome: (item.querySelector('.formation-diplome')?.value || '').trim(),
-                etablissement: (item.querySelector('.formation-etablissement')?.value || '').trim(),
-                ville: (item.querySelector('.formation-ville')?.value || '').trim(),
-                debut: (item.querySelector('.formation-debut')?.value || '').trim(),
-                fin: (item.querySelector('.formation-fin')?.value || '').trim()
-            };
-            if (f.diplome || f.etablissement) data.formations.push(f);
-        });
+        // Fonction utilitaire pour récupérer les formations
+        function getFormations(containerId) {
+            const list = [];
+            document.querySelectorAll(`#${containerId} .repeatable-item`).forEach(item => {
+                const f = {
+                    diplome: (item.querySelector('.formation-diplome')?.value || '').trim(),
+                    etablissement: (item.querySelector('.formation-etablissement')?.value || '').trim(),
+                    ville: (item.querySelector('.formation-ville')?.value || '').trim(),
+                    debut: (item.querySelector('.formation-debut')?.value || '').trim(),
+                    fin: (item.querySelector('.formation-fin')?.value || '').trim()
+                };
+                if (f.diplome || f.etablissement) list.push(f);
+            });
+            return list;
+        }
+
+        data.formationsScolaire = getFormations('formations-scolaire');
+        data.formationsUniversitaire = getFormations('formations-universitaire');
+        data.formationsProfessionnelle = getFormations('formations-professionnelle');
 
         // Validation
         if (!data.nom || !data.poste || !data.email || !data.tel || !data.profil) {
@@ -573,46 +652,51 @@
         showPage('preview-page');
     }
 
-    // Échappe le texte pour éviter injection HTML
+    // Échappe le texte pour sécurité
     function escapeHtml(text) {
         if (!text && text !== 0) return '';
         return String(text)
             .replaceAll('&','&amp;')
-            .replaceAll('<','&lt;')
-            .replaceAll('>','&gt;')
+            .replaceAll('<','<')
+            .replaceAll('>','>')
             .replaceAll('"','&quot;')
             .replaceAll("'",'&#039;');
     }
 
-    // Render CV HTML selon template
+    // Fonction utilitaire pour formater un élément de formation
+    function formatFormationItem(f) {
+        const locationPart = f.ville ? `, ${escapeHtml(f.ville)}` : '';
+        let period = '';
+        if (f.debut || f.fin) {
+            period = `<p style="font-style:italic; color:#666;">${escapeHtml(f.debut || '')}${f.debut && f.fin ? ' – ' : ''}${escapeHtml(f.fin || '')}</p>`;
+        }
+        return `
+            <div class="cv-item">
+                <h4>${escapeHtml(f.diplome)} — ${escapeHtml(f.etablissement)}${locationPart}</h4>
+                ${period}
+            </div>
+        `;
+    }
+
+    // Render CV HTML
     function renderCV(data) {
-        // début du container selon template
         let wrapperStart = '<div>';
-        let wrapperClass = '';
         if (data.template === 'modern') {
             wrapperStart = '<div style="display:flex; gap:20px; align-items:flex-start;">';
-            wrapperClass = 'modern-template';
         } else if (data.template === 'executive') {
             wrapperStart = '<div style="background:#fbfbfc; padding:18px; border-radius:8px;">';
-            wrapperClass = 'executive-template';
         } else if (data.template === 'creative') {
             wrapperStart = '<div style="border-top:4px solid var(--secondary); padding-top:12px;">';
-            wrapperClass = 'creative-template';
-        } else {
-            wrapperStart = '<div>';
-            wrapperClass = 'classic-template';
         }
 
-        let html = '';
-        html += wrapperStart;
+        let html = wrapperStart;
 
         // Photo
         if (data.photo) {
-            // try to include valid image, otherwise fallback to initials
             html += `<div style="text-align:center; margin-bottom:10px;"><img src="${escapeHtml(data.photo)}" alt="Photo" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid #eee;"></div>`;
         }
 
-        // Header: Name & title
+        // Header
         html += `<h1 style="margin-bottom:4px;">${escapeHtml(data.nom)}</h1>`;
         html += `<div style="color:var(--secondary); font-weight:600; margin-bottom:8px;">${escapeHtml(data.poste)}</div>`;
 
@@ -631,7 +715,7 @@
         html += `<div class="cv-section"><h2>Profil</h2><p>${escapeHtml(data.profil).replaceAll('\n','<br>')}</p></div>`;
 
         // Expériences
-        if (data.experiences && data.experiences.length) {
+        if (data.experiences.length) {
             html += `<div class="cv-section"><h2>Expérience professionnelle</h2>`;
             data.experiences.forEach(exp => {
                 html += `<div class="cv-item">`;
@@ -647,17 +731,19 @@
         }
 
         // Formations
-        if (data.formations && data.formations.length) {
-            html += `<div class="cv-section"><h2>Formation</h2>`;
-            data.formations.forEach(f => {
-                html += `<div class="cv-item">`;
-                const locationPart = f.ville ? `, ${escapeHtml(f.ville)}` : '';
-                html += `<h4>${escapeHtml(f.diplome)} — ${escapeHtml(f.etablissement)}${locationPart}</h4>`;
-                if (f.debut || f.fin) {
-                    html += `<p style="font-style:italic; color:#666;">${escapeHtml(f.debut || '')}${f.debut && f.fin ? ' – ' : ''}${escapeHtml(f.fin || '')}</p>`;
-                }
-                html += `</div>`;
-            });
+        if (data.formationsScolaire.length) {
+            html += `<div class="cv-section"><h2>Formation scolaire</h2>`;
+            data.formationsScolaire.forEach(f => html += formatFormationItem(f));
+            html += `</div>`;
+        }
+        if (data.formationsUniversitaire.length) {
+            html += `<div class="cv-section"><h2>Formation universitaire</h2>`;
+            data.formationsUniversitaire.forEach(f => html += formatFormationItem(f));
+            html += `</div>`;
+        }
+        if (data.formationsProfessionnelle.length) {
+            html += `<div class="cv-section"><h2>Formation professionnelle</h2>`;
+            data.formationsProfessionnelle.forEach(f => html += formatFormationItem(f));
             html += `</div>`;
         }
 
@@ -681,20 +767,19 @@
             html += `<div class="cv-section"><h2>Centres d'intérêt</h2><p>${escapeHtml(data.centres)}</p></div>`;
         }
 
-        html += `</div>`; // ferme wrapper
+        html += `</div>`;
 
-        // Injecter HTML dans le preview
-        document.getElementById('cv-output').innerHTML = html;
-
-        // applique quelques styles inline selon template (amélioration visuelle)
+        // Style spécifique selon le modèle
+        const output = document.getElementById('cv-output');
+        output.innerHTML = html;
         if (data.template === 'modern') {
-            document.getElementById('cv-output').style.borderLeft = '6px solid var(--secondary)';
+            output.style.borderLeft = '6px solid var(--secondary)';
         } else {
-            document.getElementById('cv-output').style.borderLeft = 'none';
+            output.style.borderLeft = 'none';
         }
     }
 
-    // Télécharger en PDF (html2pdf)
+    // Télécharger en PDF
     function downloadPDF() {
         const element = document.getElementById('cv-output');
         if (!element || !element.innerHTML.trim()) {
@@ -710,20 +795,20 @@
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        // show a small feedback
-        const prevTxt = document.querySelector('button[onclick="downloadPDF()"]').textContent;
-        document.querySelector('button[onclick="downloadPDF()"]').textContent = 'Génération...';
+        const btn = document.querySelector('button[onclick="downloadPDF()"]');
+        const prevTxt = btn.textContent;
+        btn.textContent = 'Génération...';
 
         html2pdf().set(opt).from(element).save().then(() => {
-            document.querySelector('button[onclick="downloadPDF()"]').textContent = prevTxt;
+            btn.textContent = prevTxt;
         }).catch(err => {
             console.error(err);
-            alert('Erreur lors de la génération du PDF. Vous pouvez utiliser Ctrl+P → Enregistrer en PDF comme alternative.');
-            document.querySelector('button[onclick="downloadPDF()"]').textContent = prevTxt;
+            alert('Erreur lors de la génération du PDF. Essayez Ctrl+P → Enregistrer en PDF.');
+            btn.textContent = prevTxt;
         });
     }
 
-    // Partage natif si dispo
+    // Partage
     function shareCV() {
         try {
             if (navigator.share) {
@@ -731,19 +816,16 @@
                     title: 'Mon CV - OrienCampus',
                     text: 'Découvrez mon CV créé avec OrienCampus',
                     url: window.location.href
-                }).then(() => {}).catch(() => {});
+                });
             } else {
-                // fallback: copy preview HTML to clipboard or show message
-                copyToClipboard(document.getElementById('cv-output').innerText || '');
-                alert('Aucun partage natif supporté. Le texte du CV a été copié dans le presse-papier.');
+                copyToClipboard(document.getElementById('cv-output').innerText);
+                alert('Le texte du CV a été copié. Partagez-le manuellement.');
             }
         } catch (e) {
-            console.error(e);
             alert('Impossible de partager sur ce navigateur.');
         }
     }
 
-    // util: copy text to clipboard
     function copyToClipboard(text) {
         if (!navigator.clipboard) {
             const ta = document.createElement('textarea');
@@ -752,29 +834,10 @@
             ta.select();
             document.execCommand('copy');
             document.body.removeChild(ta);
-            return;
+        } else {
+            navigator.clipboard.writeText(text).catch(() => {});
         }
-        navigator.clipboard.writeText(text).catch(()=>{});
     }
-
-    // Petit confort: charger un exemple (optionnel)
-    (function loadExampleData(){
-        // ne charge que si le formulaire est vide
-        if (!document.getElementById('nom').value) {
-            document.getElementById('nom').value = 'Diarra Abdoul Dramane';
-            document.getElementById('poste').value = 'Administrateur Réseaux';
-            document.getElementById('email').value = 'exemple@mail.com';
-            document.getElementById('tel').value = '+226 70 00 00 00';
-            document.getElementById('profil').value = "Administrateur réseaux motivé avec expérience en configuration de commutateurs, gestion de serveurs et sécurité réseau.";
-            document.getElementById('competences').value = 'Linux, Cisco, TCP/IP, Wireshark, Firewall';
-            document.getElementById('langues').value = 'Français - Natif, Anglais - Technique';
-            // leave experiences/formations as placeholders (users can edit)
-            document.querySelector('.exp-poste').value = 'Technicien Réseau';
-            document.querySelector('.exp-entreprise').value = 'Entreprise X';
-            document.querySelector('.formation-diplome').value = 'BPTS - Réseaux';
-            document.querySelector('.formation-etablissement').value = 'Institut Y';
-        }
-    })();
 </script>
 </body>
 </html>
