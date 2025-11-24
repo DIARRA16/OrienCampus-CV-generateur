@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Créez gratuitement un CV professionnel en ligne avec OrienCampus. Téléchargez en PDF ou Word.">
+    <meta name="description" content="Créez gratuitement un CV professionnel en ligne avec OrienCampus. Téléchargez en PDF.">
     <title>OrienCampus - Générateur de CV en ligne</title>
 
     <!-- Styles -->
@@ -107,15 +107,16 @@
         textarea { min-height:80px; resize:vertical; }
 
         /* CV Preview */
-        #cv-output { background:white; padding:30px; box-shadow:0 6px 26px rgba(0,0,0,0.08); max-width:900px; margin: 20px auto; font-size:15px; line-height:1.5; border-radius:8px; }
-        #cv-output h1 { color:var(--primary); margin-bottom:6px; font-size:22px; }
-        #cv-output h2 { color:var(--secondary); margin-top:18px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid #f0f0f0; font-size:16px; }
-        .contact-info { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px; font-size:14px; color:#444; }
-        .cv-section { margin-bottom:14px; }
-        .cv-item { margin-bottom:10px; }
-        .cv-item h4 { margin-bottom:6px; color:var(--dark); font-size:15px; }
-        .skills-container { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-        .skill-tag { background:var(--light); padding:6px 10px; border-radius:20px; font-size:13px; }
+        #cv-output {
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+            max-width: 800px;
+            margin: 20px auto;
+            font-size: 15px;
+            line-height: 1.5;
+            border-radius: 0;
+        }
 
         /* Footer */
         footer { background:var(--dark); color:white; padding:30px 0 20px; margin-top:40px; }
@@ -477,13 +478,10 @@
 
 <!-- JavaScript -->
 <script>
-    // État global
     let currentTemplate = 'classic';
 
-    // Initialisation
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Navigation pages
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
         const el = document.getElementById(pageId.replace('-page','') + '-page') || document.getElementById(pageId);
@@ -496,7 +494,6 @@
         showPage('form-page');
     }
 
-    // Repeatables: Expériences
     function addExperience() {
         const container = document.getElementById('experiences');
         const item = document.createElement('div');
@@ -518,14 +515,10 @@
     }
     function removeExperience(btn) {
         const items = document.querySelectorAll('#experiences .repeatable-item');
-        if (items.length > 1) {
-            btn.closest('.repeatable-item').remove();
-        } else {
-            alert("Vous devez conserver au moins une expérience.");
-        }
+        if (items.length > 1) btn.closest('.repeatable-item').remove();
+        else alert("Vous devez conserver au moins une expérience.");
     }
 
-    // Fonction utilitaire pour créer un item de formation réutilisable
     function createFormationItem() {
         const item = document.createElement('div');
         item.className = 'repeatable-item';
@@ -544,7 +537,6 @@
         return item;
     }
 
-    // --- Formation Scolaire ---
     function addFormationScolaire() {
         document.getElementById('formations-scolaire').appendChild(createFormationItem());
     }
@@ -554,7 +546,6 @@
         else alert("Vous devez conserver au moins une formation scolaire.");
     }
 
-    // --- Formation Universitaire ---
     function addFormationUniversitaire() {
         document.getElementById('formations-universitaire').appendChild(createFormationItem());
     }
@@ -564,7 +555,6 @@
         else alert("Vous devez conserver au moins une formation universitaire.");
     }
 
-    // --- Formation Professionnelle ---
     function addFormationProfessionnelle() {
         document.getElementById('formations-professionnelle').appendChild(createFormationItem());
     }
@@ -574,11 +564,9 @@
         else alert("Vous devez conserver au moins une formation professionnelle.");
     }
 
-    // Reset form
     function resetForm() {
         if (!confirm('Voulez-vous vraiment effacer tous les champs ?')) return;
         document.getElementById('cv-form').reset();
-        // Réinitialiser les listes répétables
         const resetRepeatable = (id) => {
             const container = document.getElementById(id);
             while (container.children.length > 1) container.removeChild(container.lastElementChild);
@@ -590,7 +578,6 @@
         window.scrollTo(0,0);
     }
 
-    // Génération de l'aperçu
     function generatePreview() {
         const data = {
             nom: document.getElementById('nom').value.trim(),
@@ -607,7 +594,6 @@
             template: currentTemplate
         };
 
-        // Expériences
         data.experiences = [];
         document.querySelectorAll('#experiences .repeatable-item').forEach(item => {
             const exp = {
@@ -621,7 +607,6 @@
             if (exp.poste || exp.entreprise) data.experiences.push(exp);
         });
 
-        // Fonction utilitaire pour récupérer les formations
         function getFormations(containerId) {
             const list = [];
             document.querySelectorAll(`#${containerId} .repeatable-item`).forEach(item => {
@@ -641,7 +626,6 @@
         data.formationsUniversitaire = getFormations('formations-universitaire');
         data.formationsProfessionnelle = getFormations('formations-professionnelle');
 
-        // Validation
         if (!data.nom || !data.poste || !data.email || !data.tel || !data.profil) {
             alert('Veuillez remplir tous les champs obligatoires (Nom, Poste, Email, Téléphone, Profil).');
             showPage('form-page');
@@ -652,7 +636,6 @@
         showPage('preview-page');
     }
 
-    // Échappe le texte pour sécurité
     function escapeHtml(text) {
         if (!text && text !== 0) return '';
         return String(text)
@@ -663,123 +646,119 @@
             .replaceAll("'",'&#039;');
     }
 
-    // Fonction utilitaire pour formater un élément de formation
-    function formatFormationItem(f) {
-        const locationPart = f.ville ? `, ${escapeHtml(f.ville)}` : '';
-        let period = '';
-        if (f.debut || f.fin) {
-            period = `<p style="font-style:italic; color:#666;">${escapeHtml(f.debut || '')}${f.debut && f.fin ? ' – ' : ''}${escapeHtml(f.fin || '')}</p>`;
-        }
-        return `
-            <div class="cv-item">
-                <h4>${escapeHtml(f.diplome)} — ${escapeHtml(f.etablissement)}${locationPart}</h4>
-                ${period}
-            </div>
-        `;
-    }
-
-    // Render CV HTML
     function renderCV(data) {
-        let wrapperStart = '<div>';
-        if (data.template === 'modern') {
-            wrapperStart = '<div style="display:flex; gap:20px; align-items:flex-start;">';
-        } else if (data.template === 'executive') {
-            wrapperStart = '<div style="background:#fbfbfc; padding:18px; border-radius:8px;">';
-        } else if (data.template === 'creative') {
-            wrapperStart = '<div style="border-top:4px solid var(--secondary); padding-top:12px;">';
-        }
+        let html = `
+        <table style="width:100%; max-width:800px; margin:0 auto; border-collapse:collapse; font-size:12px; line-height:1.4; color:#333; background:#fff;">
+            <tbody>
+        `;
 
-        let html = wrapperStart;
-
-        // Photo
+        html += `<tr><td colspan="2" style="padding:0; text-align:center; border-bottom:2px solid #3498db;">`;
         if (data.photo) {
-            html += `<div style="text-align:center; margin-bottom:10px;"><img src="${escapeHtml(data.photo)}" alt="Photo" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid #eee;"></div>`;
+            html += `<img src="${escapeHtml(data.photo)}" alt="Photo" style="width:100px; height:100px; object-fit:cover; border-radius:50%; border:2px solid #eee; margin:10px 0;">`;
         }
+        html += `<h1 style="margin:8px 0; font-size:20px; color:#2c3e50;">${escapeHtml(data.nom)}</h1>`;
+        html += `<div style="color:#3498db; font-weight:600; margin-bottom:8px;">${escapeHtml(data.poste)}</div>`;
+        html += `</td></tr>`;
 
-        // Header
-        html += `<h1 style="margin-bottom:4px;">${escapeHtml(data.nom)}</h1>`;
-        html += `<div style="color:var(--secondary); font-weight:600; margin-bottom:8px;">${escapeHtml(data.poste)}</div>`;
-
-        // Contact
-        html += `<div class="contact-info">`;
-        html += `<span>📧 ${escapeHtml(data.email)}</span>`;
-        html += `<span>📱 ${escapeHtml(data.tel)}</span>`;
-        if (data.adresse) html += `<span>📍 ${escapeHtml(data.adresse)}</span>`;
+        html += `<tr><td colspan="2" style="padding:10px 0; border-bottom:1px solid #eee; font-size:11px;">`;
+        const contacts = [];
+        contacts.push(`📧 ${escapeHtml(data.email)}`);
+        contacts.push(`📱 ${escapeHtml(data.tel)}`);
+        if (data.adresse) contacts.push(`📍 ${escapeHtml(data.adresse)}`);
         if (data.linkedin) {
             const url = escapeHtml(data.linkedin);
-            html += `<span>🔗 <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></span>`;
+            contacts.push(`🔗 <a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#3498db; text-decoration:underline;">LinkedIn</a>`);
         }
-        html += `</div>`;
+        html += contacts.join(' &nbsp;•&nbsp; ');
+        html += `</td></tr>`;
 
-        // Profil
-        html += `<div class="cv-section"><h2>Profil</h2><p>${escapeHtml(data.profil).replaceAll('\n','<br>')}</p></div>`;
+        if (data.profil) {
+            html += `<tr><td colspan="2" style="padding:12px 0; border-bottom:1px solid #eee;">
+                <h2 style="color:#3498db; margin:0 0 6px; font-size:13px; text-transform:uppercase;">Profil</h2>
+                <p style="margin:0; white-space:pre-wrap;">${escapeHtml(data.profil).replaceAll('\n', '<br>')}</p>
+            </td></tr>`;
+        }
 
-        // Expériences
         if (data.experiences.length) {
-            html += `<div class="cv-section"><h2>Expérience professionnelle</h2>`;
+            html += `<tr><td colspan="2" style="padding:12px 0; border-bottom:1px solid #eee;">
+                <h2 style="color:#3498db; margin:0 0 8px; font-size:13px; text-transform:uppercase;">Expérience professionnelle</h2>`;
             data.experiences.forEach(exp => {
-                html += `<div class="cv-item">`;
                 const locationPart = exp.ville ? `, ${escapeHtml(exp.ville)}` : '';
-                html += `<h4>${escapeHtml(exp.poste)} — ${escapeHtml(exp.entreprise)}${locationPart}</h4>`;
-                if (exp.debut || exp.fin) {
-                    html += `<p style="font-style:italic; color:#666; margin-bottom:6px;">${escapeHtml(exp.debut || '')}${exp.debut && exp.fin ? ' – ' : ''}${escapeHtml(exp.fin || '')}</p>`;
-                }
-                if (exp.desc) html += `<p>${escapeHtml(exp.desc).replaceAll('\n','<br>')}</p>`;
-                html += `</div>`;
+                const period = (exp.debut || exp.fin) ? 
+                    `<div style="font-size:10px; color:#666; margin:2px 0;">${escapeHtml(exp.debut || '')}${exp.debut && exp.fin ? ' – ' : ''}${escapeHtml(exp.fin || '')}</div>` : '';
+                html += `
+                    <div style="margin-bottom:10px;">
+                        <div style="font-weight:bold;">${escapeHtml(exp.poste)} — ${escapeHtml(exp.entreprise)}${locationPart}</div>
+                        ${period}
+                        ${exp.desc ? `<div style="margin-top:4px; font-size:11px;">${escapeHtml(exp.desc).replaceAll('\n', '<br>')}</div>` : ''}
+                    </div>
+                `;
             });
-            html += `</div>`;
+            html += `</td></tr>`;
         }
 
-        // Formations
-        if (data.formationsScolaire.length) {
-            html += `<div class="cv-section"><h2>Formation scolaire</h2>`;
-            data.formationsScolaire.forEach(f => html += formatFormationItem(f));
-            html += `</div>`;
-        }
-        if (data.formationsUniversitaire.length) {
-            html += `<div class="cv-section"><h2>Formation universitaire</h2>`;
-            data.formationsUniversitaire.forEach(f => html += formatFormationItem(f));
-            html += `</div>`;
-        }
-        if (data.formationsProfessionnelle.length) {
-            html += `<div class="cv-section"><h2>Formation professionnelle</h2>`;
-            data.formationsProfessionnelle.forEach(f => html += formatFormationItem(f));
-            html += `</div>`;
+        const allFormations = [
+            { list: data.formationsScolaire, title: "Formation scolaire" },
+            { list: data.formationsUniversitaire, title: "Formation universitaire" },
+            { list: data.formationsProfessionnelle, title: "Formation professionnelle" }
+        ].filter(section => section.list.length > 0);
+
+        if (allFormations.length) {
+            html += `<tr><td colspan="2" style="padding:12px 0; border-bottom:1px solid #eee;">`;
+            allFormations.forEach(section => {
+                html += `<h2 style="color:#3498db; margin:0 0 8px; font-size:13px; text-transform:uppercase;">${section.title}</h2>`;
+                section.list.forEach(f => {
+                    const locationPart = f.ville ? `, ${escapeHtml(f.ville)}` : '';
+                    const period = (f.debut || f.fin) ? 
+                        `<div style="font-size:10px; color:#666; margin:2px 0;">${escapeHtml(f.debut || '')}${f.debut && f.fin ? ' – ' : ''}${escapeHtml(f.fin || '')}</div>` : '';
+                    html += `
+                        <div style="margin-bottom:8px;">
+                            <div style="font-weight:bold;">${escapeHtml(f.diplome)} — ${escapeHtml(f.etablissement)}${locationPart}</div>
+                            ${period}
+                        </div>
+                    `;
+                });
+            });
+            html += `</td></tr>`;
         }
 
-        // Compétences
         if (data.competences) {
             const skills = data.competences.split(',').map(s => s.trim()).filter(Boolean);
             if (skills.length) {
-                html += `<div class="cv-section"><h2>Compétences</h2><div class="skills-container">`;
-                skills.forEach(s => { html += `<span class="skill-tag">${escapeHtml(s)}</span>`; });
-                html += `</div></div>`;
+                html += `<tr><td colspan="2" style="padding:12px 0; border-bottom:1px solid #eee;">
+                    <h2 style="color:#3498db; margin:0 0 6px; font-size:13px; text-transform:uppercase;">Compétences</h2>
+                    <div style="display:flex; flex-wrap:wrap; gap:4px;">`;
+                skills.forEach(s => {
+                    html += `<span style="background:#ecf0f1; padding:3px 8px; border-radius:12px; font-size:11px;">${escapeHtml(s)}</span>`;
+                });
+                html += `</div></td></tr>`;
             }
         }
 
-        // Langues
         if (data.langues) {
-            html += `<div class="cv-section"><h2>Langues</h2><p>${escapeHtml(data.langues)}</p></div>`;
+            html += `<tr><td colspan="2" style="padding:12px 0; border-bottom:1px solid #eee;">
+                <h2 style="color:#3498db; margin:0 0 6px; font-size:13px; text-transform:uppercase;">Langues</h2>
+                <p style="margin:0;">${escapeHtml(data.langues)}</p>
+            </td></tr>`;
         }
 
-        // Centres d'intérêt
         if (data.centres) {
-            html += `<div class="cv-section"><h2>Centres d'intérêt</h2><p>${escapeHtml(data.centres)}</p></div>`;
+            html += `<tr><td colspan="2" style="padding:12px 0; border-bottom:1px solid #eee;">
+                <h2 style="color:#3498db; margin:0 0 6px; font-size:13px; text-transform:uppercase;">Centres d'intérêt</h2>
+                <p style="margin:0;">${escapeHtml(data.centres)}</p>
+            </td></tr>`;
         }
 
-        html += `</div>`;
+        html += `
+            </tbody>
+        </table>
+        <div style="height:20px;"></div>
+        `;
 
-        // Style spécifique selon le modèle
         const output = document.getElementById('cv-output');
         output.innerHTML = html;
-        if (data.template === 'modern') {
-            output.style.borderLeft = '6px solid var(--secondary)';
-        } else {
-            output.style.borderLeft = 'none';
-        }
     }
 
-    // Télécharger en PDF
     function downloadPDF() {
         const element = document.getElementById('cv-output');
         if (!element || !element.innerHTML.trim()) {
@@ -808,7 +787,6 @@
         });
     }
 
-    // Partage
     function shareCV() {
         try {
             if (navigator.share) {
