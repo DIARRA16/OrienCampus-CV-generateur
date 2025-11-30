@@ -1,180 +1,513 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Générateur de CV - OrienCampus</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>OrienCampus - Générateur de CV</title>
 
+<!-- Styles modernes -->
 <style>
-    body { font-family: Arial, sans-serif; background:#f0f0f0; margin:0; padding:0; }
-    .container { width: 95%; max-width: 900px; margin: 20px auto; background:white; padding:20px; border-radius:10px; }
-    .page { display:none; }
-    .active { display:block; }
-    .btn { padding:10px 15px; border:none; background:#2b62ff; color:white; border-radius:8px; cursor:pointer; }
-    .btn-outline { padding:10px 15px; border:1px solid #2b62ff; color:#2b62ff; background:white; border-radius:8px; cursor:pointer; }
-    .form-group { margin-bottom:12px; }
-    input { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; }
-    .block { border:1px solid #ccc; padding:10px; margin-top:10px; border-radius:6px; background:#fafafa; }
-    .remove-item { float:right; background:#ff3b3b; color:white; border:none; width:25px; height:25px; border-radius:50%; cursor:pointer; }
+  :root{
+    --bg:#f4f7fb; --card:#ffffff; --accent:#007766; --muted:#6b7280; --accent-2:#2b62ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter, "Segoe UI", system-ui, Arial, sans-serif;background:var(--bg);color:#111}
+  .wrap{max-width:1000px;margin:18px auto;padding:16px}
+  header{display:flex;align-items:center;justify-content:space-between;background:var(--card);padding:12px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(16,24,40,.06)}
+  .brand{font-weight:700;color:var(--accent);font-size:18px}
+  .controls{display:flex;gap:8px;align-items:center}
+  button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--accent-2);color:#fff;font-weight:600}
+  .btn-outline{background:transparent;border:1px solid var(--accent-2);color:var(--accent-2)}
+  .btn-soft{background:#eef6f4;color:var(--accent);border:1px solid rgba(0,0,0,0.03)}
+  main{display:grid;grid-template-columns:1fr 420px;gap:16px;margin-top:16px}
+  /* Form column */
+  .panel{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,.05)}
+  h2{margin:0 0 12px;color:var(--accent)}
+  .field{margin-bottom:10px}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  input[type="text"], input[type="email"], input[type="tel"], textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+  textarea{min-height:80px;resize:vertical}
+  .row{display:flex;gap:10px}
+  .small{flex:1}
+  .list{margin-top:8px}
+  .item{background:#fbfdff;border:1px solid #eef3fb;padding:10px;border-radius:8px;margin-bottom:8px;position:relative}
+  .remove{position:absolute;right:8px;top:8px;background:#ff4d4f;border:0;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer}
+  .add{display:inline-block;margin-top:8px;background:transparent;border:1px dashed #dbe8ff;padding:8px 10px;border-radius:8px;color:var(--accent-2)}
+  /* Preview column */
+  .preview-wrap{position:relative}
+  .preview{background:linear-gradient(180deg,#ffffff,#f7fcfb);padding:18px;border-radius:10px;border:1px solid #e6eef0;min-height:200px}
+  .cv-header{display:flex;gap:14px;align-items:center}
+  .photo{width:96px;height:96px;border-radius:8px;overflow:hidden;border:2px solid #eef6f4;flex:0 0 96px;background:#f3f7f6;display:flex;align-items:center;justify-content:center;color:#9aa6a3}
+  .photo img{width:100%;height:100%;object-fit:cover}
+  .info h1{margin:0;font-size:20px;color:var(--accent)}
+  .info p{margin:6px 0;color:var(--muted);font-size:13px}
+  .section{margin-top:14px}
+  .section h3{margin:0 0 8px;color:var(--accent);font-size:13px;letter-spacing:0.6px;border-bottom:2px solid rgba(0,119,102,0.06);padding-bottom:6px}
+  .skill{display:inline-block;background:#eef8f4;color:var(--accent);padding:6px 8px;border-radius:999px;font-size:12px;margin:4px 6px 0 0}
+  footer.small{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+
+  /* responsive */
+  @media (max-width:980px){
+    main{grid-template-columns:1fr; }
+    .preview-wrap{order:-1;margin-bottom:12px}
+  }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>Générateur de CV - OrienCampus</h1>
-
-    <!-- PAGE 1 -->
-    <div id="page1" class="page active">
-        <h2>Informations personnelles</h2>
-        <div class="form-group"><label>Nom</label><input id="nom"></div>
-        <div class="form-group"><label>Prénoms</label><input id="prenoms"></div>
-        <div class="form-group"><label>Email</label><input id="email"></div>
-        <div class="form-group"><label>Téléphone</label><input id="telephone"></div>
-        <div class="form-group"><label>Adresse</label><input id="adresse"></div>
-        
-        <button class="btn" onclick="nextPage(1)">Suivant</button>
+<div class="wrap">
+  <header>
+    <div class="brand">Orien<span style="color:var(--accent-2)">Campus</span> — Générateur de CV</div>
+    <div class="controls">
+      <button class="btn-soft" id="loadSaved">Reprendre</button>
+      <button class="btn-outline" id="clearAll">Tout effacer</button>
+      <button id="download" title="Télécharger en PDF">Télécharger PDF</button>
     </div>
+  </header>
 
-    <!-- PAGE 2 -->
-    <div id="page2" class="page">
-        <h2>Votre parcours scolaire</h2>
+  <main>
+    <!-- Formulaire -->
+    <section class="panel" aria-label="Formulaire de création de CV">
+      <h2>Informations personnelles</h2>
 
-        <h3>École primaire</h3>
-        <div id="primaire"></div>
-        <button class="btn-outline" onclick="addBlock('primaire')">+ Ajouter un primaire</button>
+      <div class="field row">
+        <div style="flex:2">
+          <label>Nom complet</label>
+          <input id="nom" type="text" placeholder="Ex: Diarra Abdoul Dramane" />
+        </div>
+        <div style="flex:1">
+          <label>Poste visé</label>
+          <input id="poste" type="text" placeholder="Ex: Technicien réseaux" />
+        </div>
+      </div>
 
-        <h3>Lycée – Premier cycle</h3>
-        <div id="premierCycle"></div>
-        <button class="btn-outline" onclick="addBlock('premierCycle')">+ Ajouter un 1er cycle</button>
+      <div class="field row">
+        <div class="small">
+          <label>Email</label>
+          <input id="email" type="email" placeholder="exemple@mail.com" />
+        </div>
+        <div class="small">
+          <label>Téléphone</label>
+          <input id="tel" type="tel" placeholder="+226 70 00 00 00" />
+        </div>
+      </div>
 
-        <h3>Lycée – Second cycle</h3>
-        <div id="secondCycle"></div>
-        <button class="btn-outline" onclick="addBlock('secondCycle')">+ Ajouter un 2nd cycle</button>
+      <div class="field">
+        <label>Adresse</label>
+        <input id="adresse" type="text" placeholder="Ville, Pays" />
+      </div>
 
-        <h3>Université / Institut</h3>
-        <div id="universite"></div>
-        <button class="btn-outline" onclick="addBlock('universite')">+ Ajouter une formation universitaire</button>
+      <div class="field">
+        <label>Photo (URL ou fichier)</label>
+        <div class="row">
+          <input id="photoURL" type="text" placeholder="https://..." />
+          <input id="photoFile" type="file" accept="image/*" />
+        </div>
+        <div style="margin-top:6px;color:var(--muted);font-size:13px">Si vous uploadez un fichier, il sera utilisé et sauvegardé localement (dataURL).</div>
+      </div>
 
-        <br><br>
-        <button class="btn-outline" onclick="previousPage(2)">Retour</button>
-        <button class="btn" onclick="nextPage(2)">Suivant</button>
-    </div>
+      <div style="height:10px"></div>
 
-    <!-- PAGE 3 -->
-    <div id="page3" class="page">
-        <h2>Expériences professionnelles (facultatif)</h2>
+      <h2>Parcours scolaire</h2>
+      <div class="field">
+        <label>École primaire</label>
+        <div id="primaireList" class="list"></div>
+        <button class="add" onclick="addSchool('primaireList')">+ Ajouter primaire</button>
+      </div>
 
-        <div id="experiences"></div>
-        <button class="btn-outline" onclick="addExperience()">+ Ajouter une expérience</button>
+      <div class="field">
+        <label>Lycée — Premier cycle</label>
+        <div id="premierList" class="list"></div>
+        <button class="add" onclick="addSchool('premierList')">+ Ajouter 1er cycle</button>
+      </div>
 
-        <br><br>
-        <button class="btn-outline" onclick="previousPage(3)">Retour</button>
-        <button class="btn" onclick="nextPage(3)">Générer le CV</button>
-    </div>
+      <div class="field">
+        <label>Lycée — Second cycle</label>
+        <div id="secondList" class="list"></div>
+        <button class="add" onclick="addSchool('secondList')">+ Ajouter 2nd cycle</button>
+      </div>
 
-    <!-- PAGE 4 -->
-    <div id="page4" class="page">
-        <h2>Aperçu du CV</h2>
-        <div id="cv-content" style="padding:15px; background:white; border:1px solid #ccc; border-radius:8px;"></div>
+      <div class="field">
+        <label>Université / Institut</label>
+        <div id="uniList" class="list"></div>
+        <button class="add" onclick="addSchool('uniList')">+ Ajouter université</button>
+      </div>
 
-        <br>
-        <button class="btn-outline" onclick="previousPage(4)">Retour</button>
-        <button class="btn" onclick="downloadPDF()">Télécharger en PDF</button>
-    </div>
+      <h2>Expériences (facultatif)</h2>
+      <div id="expList" class="list"></div>
+      <button class="add" onclick="addExperience()">+ Ajouter expérience</button>
+
+      <h2>Autres</h2>
+      <div class="field">
+        <label>Compétences (séparées par des virgules)</label>
+        <input id="skills" type="text" placeholder="Ex: Communication, Excel, Python" />
+      </div>
+      <div class="field">
+        <label>Langues</label>
+        <input id="languages" type="text" placeholder="Ex: Français - Natif, Anglais - Intermédiaire" />
+      </div>
+      <div class="field">
+        <label>Centres d'intérêt</label>
+        <input id="interests" type="text" placeholder="Ex: Lecture, Football" />
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="saveBtn" class="btn">Sauvegarder</button>
+        <button id="previewBtn" class="btn btn-outline">Aperçu</button>
+      </div>
+    </section>
+
+    <!-- Aperçu -->
+    <aside class="preview-wrap">
+      <div class="panel preview" id="previewArea" role="region" aria-live="polite">
+        <!-- CV rendu ici -->
+        <div id="cvRender" style="opacity:0.01;transition:opacity .25s">
+          <!-- placeholder initial -->
+          <div style="text-align:center;color:var(--muted)">Cliquez sur "Aperçu" pour générer le CV</div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:12px;color:var(--muted)">Aperçu dynamique · Sauvegarde locale</div>
+        <div>
+          <button class="btn-soft" id="themeBtn">Design moderne</button>
+        </div>
+      </div>
+
+      <footer class="small">© <span id="year"></span> OrienCampus</footer>
+    </aside>
+  </main>
 </div>
 
-<!-- HTML2PDF -->
+<!-- html2pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-/* PAGE SYSTEM */
-function nextPage(page){
-    document.getElementById("page"+page).classList.remove("active");
-    document.getElementById("page"+(page+1)).classList.add("active");
-    if(page === 3){ generateCV(); }
+/* ---------- Helpers & State ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+const stateKey = 'oriencampus_cv_v1';
+let photoDataURL = null; // dataURL if user uploads file
+
+function uid(){ return Math.random().toString(36).slice(2,9) }
+
+/* ---------- Add dynamic blocks ---------- */
+function createSchoolBlock(sectionId){
+  const id = uid();
+  const wrapper = document.createElement('div');
+  wrapper.className = 'item block-'+id;
+  wrapper.innerHTML = `
+    <button class="remove" title="Supprimer" onclick="this.parentNode.remove(); saveLocal()">&times;</button>
+    <div class="field"><label>Établissement</label><input class="etab" placeholder="Nom de l'établissement"></div>
+    <div class="row">
+      <div class="small"><label>Ville</label><input class="ville" placeholder="Ville"></div>
+      <div class="small"><label>Année / Période</label><input class="annee" placeholder="Ex: 2010 - 2016"></div>
+    </div>
+  `;
+  document.getElementById(sectionId).appendChild(wrapper);
+  saveLocal();
+  return wrapper;
 }
 
-function previousPage(page){
-    document.getElementById("page"+page).classList.remove("active");
-    document.getElementById("page"+(page-1)).classList.add("active");
+function addSchool(sectionId){ createSchoolBlock(sectionId) }
+
+function createExp(){
+  const id = uid();
+  const wrapper = document.createElement('div');
+  wrapper.className = 'item block-'+id;
+  wrapper.innerHTML = `
+    <button class="remove" title="Supprimer" onclick="this.parentNode.remove(); saveLocal()">&times;</button>
+    <div class="field"><label>Poste</label><input class="poste" placeholder="Ex: Technicien en réseaux"></div>
+    <div class="field"><label>Entreprise</label><input class="entre" placeholder="Nom de l'entreprise"></div>
+    <div class="row">
+      <div class="small"><label>Ville</label><input class="eville" placeholder="Ville"></div>
+      <div class="small"><label>Période</label><input class="eperiode" placeholder="Ex: 2019 - 2022"></div>
+    </div>
+    <div class="field"><label>Description (facultatif)</label><textarea class="edesc" placeholder="Tâches et réalisations"></textarea></div>
+  `;
+  document.getElementById('expList').appendChild(wrapper);
+  saveLocal();
+  return wrapper;
+}
+function addExperience(){ createExp() }
+
+/* ---------- Save/Load localStorage ---------- */
+function gatherData(){
+  const data = {
+    nom: document.getElementById('nom').value || '',
+    poste: document.getElementById('poste').value || '',
+    email: document.getElementById('email').value || '',
+    tel: document.getElementById('tel').value || '',
+    adresse: document.getElementById('adresse').value || '',
+    photoURL: document.getElementById('photoURL').value || '',
+    photoDataURL: photoDataURL || null,
+    primaire: extractList('primaireList'),
+    premier: extractList('premierList'),
+    second: extractList('secondList'),
+    uni: extractList('uniList'),
+    exps: extractExps(),
+    skills: document.getElementById('skills').value || '',
+    languages: document.getElementById('languages').value || '',
+    interests: document.getElementById('interests').value || ''
+  };
+  return data;
 }
 
-/* ADD SCHOOL BLOCK */
-function addBlock(section){
-    let box = document.createElement("div");
-    box.className = "block";
-
-    box.innerHTML = `
-        <button class="remove-item" onclick="this.parentNode.remove()">×</button>
-        <div class="form-group"><label>Établissement</label><input class="etab"></div>
-        <div class="form-group"><label>Ville</label><input class="ville"></div>
-        <div class="form-group"><label>Année</label><input class="annee"></div>
-    `;
-    document.getElementById(section).appendChild(box);
+function saveLocal(){
+  try{
+    const data = gatherData();
+    localStorage.setItem(stateKey, JSON.stringify(data));
+    // small visual feedback
+    document.getElementById('saveBtn').textContent = 'Sauvegardé ✓';
+    setTimeout(()=>document.getElementById('saveBtn').textContent = 'Sauvegarder',1200);
+  }catch(e){
+    console.error('Impossible de sauvegarder', e);
+  }
 }
 
-/* EXPERIENCES */
-function addExperience(){
-    let box = document.createElement("div");
-    box.className = "block";
+function loadLocal(){
+  const raw = localStorage.getItem(stateKey);
+  if(!raw) return false;
+  try{
+    const data = JSON.parse(raw);
+    // populate fields
+    document.getElementById('nom').value = data.nom || '';
+    document.getElementById('poste').value = data.poste || '';
+    document.getElementById('email').value = data.email || '';
+    document.getElementById('tel').value = data.tel || '';
+    document.getElementById('adresse').value = data.adresse || '';
+    document.getElementById('photoURL').value = data.photoURL || '';
+    photoDataURL = data.photoDataURL || null;
 
-    box.innerHTML = `
-        <button class="remove-item" onclick="this.parentNode.remove()">×</button>
-        <div class="form-group"><label>Poste occupé</label><input class="poste"></div>
-        <div class="form-group"><label>Entreprise</label><input class="entre"></div>
-        <div class="form-group"><label>Année</label><input class="anexp"></div>
-    `;
-    document.getElementById("experiences").appendChild(box);
+    // lists: clear then repopulate
+    ['primaireList','premierList','secondList','uniList'].forEach(id => {
+      document.getElementById(id).innerHTML = '';
+    });
+    if(Array.isArray(data.primaire)) data.primaire.forEach(p=>{
+      const node = createSchoolBlock('primaireList');
+      node.querySelector('.etab').value = p.etab || '';
+      node.querySelector('.ville').value = p.ville || '';
+      node.querySelector('.annee').value = p.annee || '';
+    });
+    if(Array.isArray(data.premier)) data.premier.forEach(p=>{
+      const node = createSchoolBlock('premierList');
+      node.querySelector('.etab').value = p.etab || '';
+      node.querySelector('.ville').value = p.ville || '';
+      node.querySelector('.annee').value = p.annee || '';
+    });
+    if(Array.isArray(data.second)) data.second.forEach(p=>{
+      const node = createSchoolBlock('secondList');
+      node.querySelector('.etab').value = p.etab || '';
+      node.querySelector('.ville').value = p.ville || '';
+      node.querySelector('.annee').value = p.annee || '';
+    });
+    if(Array.isArray(data.uni)) data.uni.forEach(p=>{
+      const node = createSchoolBlock('uniList');
+      node.querySelector('.etab').value = p.etab || '';
+      node.querySelector('.ville').value = p.ville || '';
+      node.querySelector('.annee').value = p.annee || '';
+    });
+
+    // experiences
+    document.getElementById('expList').innerHTML = '';
+    if(Array.isArray(data.exps)) data.exps.forEach(e=>{
+      const node = createExp();
+      node.querySelector('.poste').value = e.poste || '';
+      node.querySelector('.entre').value = e.entre || '';
+      node.querySelector('.eville').value = e.ville || '';
+      node.querySelector('.eperiode').value = e.periode || '';
+      node.querySelector('.edesc').value = e.desc || '';
+    });
+
+    document.getElementById('skills').value = data.skills || '';
+    document.getElementById('languages').value = data.languages || '';
+    document.getElementById('interests').value = data.interests || '';
+    return true;
+  }catch(e){ console.error(e); return false; }
 }
 
-/* GENERATE CV */
-function generateCV(){
-    let cv = document.getElementById("cv-content");
-    cv.innerHTML = `
-        <h1>${nom.value} ${prenoms.value}</h1>
-        <p><b>Email :</b> ${email.value}</p>
-        <p><b>Téléphone :</b> ${telephone.value}</p>
-        <p><b>Adresse :</b> ${adresse.value}</p>
-    `;
+function extractList(sectionId){
+  const arr=[];
+  document.querySelectorAll(`#${sectionId} .item`).forEach(n=>{
+    arr.push({
+      etab: n.querySelector('.etab')?.value||'',
+      ville: n.querySelector('.ville')?.value||'',
+      annee: n.querySelector('.annee')?.value||''
+    });
+  });
+  return arr;
+}
+function extractExps(){
+  const arr=[];
+  document.querySelectorAll('#expList .item').forEach(n=>{
+    arr.push({
+      poste: n.querySelector('.poste')?.value||'',
+      entre: n.querySelector('.entre')?.value||'',
+      ville: n.querySelector('.eville')?.value||'',
+      periode: n.querySelector('.eperiode')?.value||'',
+      desc: n.querySelector('.edesc')?.value||''
+    });
+  });
+  return arr;
+}
 
-    function addSection(title, id){
-        let items = document.querySelectorAll("#"+id+" .block");
-        if(items.length === 0) return;
+/* ---------- Photo handling ---------- */
+const fileInput = document.getElementById('photoFile');
+fileInput.addEventListener('change', (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const reader = new FileReader();
+  reader.onload = function(evt){
+    photoDataURL = evt.target.result; // base64
+    saveLocal();
+    // if preview visible regenerate
+    renderPreview();
+  }
+  reader.readAsDataURL(f);
+});
 
-        cv.innerHTML += `<h2>${title}</h2>`;
-        items.forEach(b => {
-            cv.innerHTML += `
-                <p><b>${b.querySelector(".etab").value}</b> – 
-                ${b.querySelector(".ville").value} 
-                (${b.querySelector(".annee").value})</p>
-            `;
-        });
+document.getElementById('photoURL').addEventListener('change', ()=>{
+  // if user enters URL, we prefer URL over uploaded file
+  saveLocal();
+});
+
+/* ---------- Render Preview ---------- */
+function renderPreview(){
+  const data = gatherData();
+  // choose image source: uploaded file > URL > placeholder
+  const imageSrc = data.photoDataURL || (data.photoURL ? data.photoURL : null);
+  const cv = document.getElementById('cvRender');
+  let html = '';
+
+  html += `<div class="cv-header">`;
+  html += `<div class="photo">${ imageSrc ? `<img src="${escapeHtml(imageSrc)}" alt="Photo">` : '<div style="font-size:12px;color:#98a6a3">Photo</div>' }</div>`;
+  html += `<div class="info">`;
+  html += `<h1>${escapeHtml(data.nom || '')}</h1>`;
+  html += `<p style="margin:6px 0 0;"><strong>${escapeHtml(data.poste||'')}</strong></p>`;
+  html += `<p style="margin:6px 0 0;color:var(--muted);font-size:13px">${escapeHtml(data.email||'')}${data.tel ? ' · '+escapeHtml(data.tel):''}</p>`;
+  if(data.adresse) html += `<p style="margin:6px 0 0;color:var(--muted);font-size:13px">${escapeHtml(data.adresse)}</p>`;
+  html += `</div></div>`;
+
+  // scolaire sections
+  function renderSchool(title, arr){
+    if(!arr || !arr.length) return '';
+    let s = `<div class="section"><h3>${escapeHtml(title)}</h3>`;
+    arr.forEach(it=>{
+      if(!it.etab && !it.annee && !it.ville) return;
+      s += `<div style="margin-bottom:6px"><strong>${escapeHtml(it.etab||'')}</strong>`;
+      if(it.ville) s += ` — ${escapeHtml(it.ville)}`;
+      if(it.annee) s += ` <span style="color:var(--muted)">(${escapeHtml(it.annee)})</span>`;
+      s += `</div>`;
+    });
+    s += `</div>`;
+    return s;
+  }
+  html += renderSchool('École primaire', data.primaire);
+  html += renderSchool('Lycée — Premier cycle', data.premier);
+  html += renderSchool('Lycée — Second cycle', data.second);
+  html += renderSchool('Université / Institut', data.uni);
+
+  // experiences
+  if(data.exps && data.exps.length){
+    html += `<div class="section"><h3>Expériences professionnelles</h3>`;
+    data.exps.forEach(e=>{
+      if(!e.poste && !e.entre) return;
+      html += `<div style="margin-bottom:8px"><strong>${escapeHtml(e.poste||'')}</strong> — ${escapeHtml(e.entre||'')}`;
+      if(e.periode) html += ` <span style="color:var(--muted)">(${escapeHtml(e.periode)})</span>`;
+      if(e.desc) html += `<div style="font-size:13px;color:var(--muted);margin-top:4px">${escapeHtml(e.desc)}</div>`;
+      html += `</div>`;
+    });
+    html += `</div>`;
+  }
+
+  // skills languages interests
+  const skills = (data.skills || '').split(',').map(s=>s.trim()).filter(Boolean);
+  if(skills.length){
+    html += `<div class="section"><h3>Compétences</h3>`;
+    skills.forEach(s => html += `<span class="skill">${escapeHtml(s)}</span>`);
+    html += `</div>`;
+  }
+
+  if(data.languages){
+    html += `<div class="section"><h3>Langues</h3><div>${escapeHtml(data.languages)}</div></div>`;
+  }
+  if(data.interests){
+    html += `<div class="section"><h3>Centres d'intérêt</h3><div>${escapeHtml(data.interests)}</div></div>`;
+  }
+
+  cv.innerHTML = html;
+  // make visible
+  cv.style.opacity = 1;
+}
+
+/* ---------- Utilities ---------- */
+function escapeHtml(str){
+  if(str === null || str === undefined) return '';
+  return String(str)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
+}
+
+/* ---------- Buttons ---------- */
+document.getElementById('saveBtn').addEventListener('click', saveLocal);
+document.getElementById('previewBtn').addEventListener('click', ()=>{
+  renderPreview();
+  saveLocal();
+});
+document.getElementById('loadSaved').addEventListener('click', ()=>{
+  const ok = loadLocal();
+  if(!ok) alert('Aucune sauvegarde trouvée.');
+  else { renderPreview(); alert('Données restaurées.'); }
+});
+document.getElementById('clearAll').addEventListener('click', ()=>{
+  if(!confirm('Supprimer toutes les données locales ?')) return;
+  localStorage.removeItem(stateKey);
+  location.reload();
+});
+
+/* ---------- Download PDF ---------- */
+document.getElementById('download').addEventListener('click', ()=>{
+  // ensure preview exists
+  renderPreview();
+  const element = document.getElementById('cvRender');
+  // small in-page style overrides for PDF
+  const opt = {
+    margin:       0.4,
+    filename:     `CV-${(document.getElementById('nom').value || 'mon-cv').replaceAll(' ','_')}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+});
+
+/* ---------- Auto-save on change (light) ---------- */
+[
+  'nom','poste','email','tel','adresse','photoURL','skills','languages','interests'
+].forEach(id=>{
+  const el = document.getElementById(id);
+  el && el.addEventListener('input', ()=>{ clearTimeout(window._sv); window._sv = setTimeout(saveLocal,600) });
+});
+
+/* ---------- Initial load: restore if exists ---------- */
+(function init(){
+  loadLocal(); // try to restore silently
+  // if nothing, create one block for each section so UI isn't empty
+  ['primaireList','premierList','secondList','uniList','expList'].forEach(id=>{
+    if(document.getElementById(id).children.length === 0){
+      if(id === 'expList') createExp();
+      else createSchoolBlock(id);
     }
+  });
+  // render preview if data exists
+  const has = localStorage.getItem(stateKey);
+  if(has) renderPreview();
+})();
 
-    addSection("École primaire", "primaire");
-    addSection("Lycée – Premier cycle", "premierCycle");
-    addSection("Lycée – Second cycle", "secondCycle");
-    addSection("Université / Institut", "universite");
-
-    /* EXPERIENCES */
-    let exp = document.querySelectorAll("#experiences .block");
-    if(exp.length > 0){
-        cv.innerHTML += `<h2>Expériences professionnelles</h2>`;
-        exp.forEach(e => {
-            cv.innerHTML += `
-                <p><b>${e.querySelector(".poste").value}</b> – 
-                ${e.querySelector(".entre").value} 
-                (${e.querySelector(".anexp").value})</p>
-            `;
-        });
-    }
-}
-
-/* PDF */
-function downloadPDF(){
-    html2pdf().from(document.getElementById("cv-content")).save("MonCV.pdf");
-}
+/* ---------- small helper to save on remove etc ---------- */
+window.saveLocal = saveLocal;
 </script>
 
 </body>
