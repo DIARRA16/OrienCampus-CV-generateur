@@ -1,74 +1,316 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>OrienCampus - Générateur de CV</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OrienCampus - Générateur de CV Moderne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9fbfd;
+      --card: #ffffff;
+      --accent: #007766;
+      --accent-dark: #005f4f;
+      --accent-2: #2b62ff;
+      --muted: #6b7280;
+      --border: #eaeef5;
+      --success: #10b981;
+      --danger: #ef4444;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-md: 0 6px 20px rgba(16,24,40,0.06);
+      --radius: 12px;
+      --transition: all 0.25s ease;
+    }
 
-<!-- Styles modernes -->
-<style>
-  :root{
-    --bg:#f4f7fb; --card:#ffffff; --accent:#007766; --muted:#6b7280; --accent-2:#2b62ff;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter, "Segoe UI", system-ui, Arial, sans-serif;background:var(--bg);color:#111}
-  .wrap{max-width:1000px;margin:18px auto;padding:16px}
-  header{display:flex;align-items:center;justify-content:space-between;background:var(--card);padding:12px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(16,24,40,.06)}
-  .brand{font-weight:700;color:var(--accent);font-size:18px}
-  .controls{display:flex;gap:8px;align-items:center}
-  button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--accent-2);color:#fff;font-weight:600}
-  .btn-outline{background:transparent;border:1px solid var(--accent-2);color:var(--accent-2)}
-  .btn-soft{background:#eef6f4;color:var(--accent);border:1px solid rgba(0,0,0,0.03)}
-  main{display:grid;grid-template-columns:1fr 420px;gap:16px;margin-top:16px}
-  /* Form column */
-  .panel{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,.05)}
-  h2{margin:0 0 12px;color:var(--accent)}
-  .field{margin-bottom:10px}
-  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-  input[type="text"], input[type="email"], input[type="tel"], textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
-  textarea{min-height:80px;resize:vertical}
-  .row{display:flex;gap:10px}
-  .small{flex:1}
-  .list{margin-top:8px}
-  .item{background:#fbfdff;border:1px solid #eef3fb;padding:10px;border-radius:8px;margin-bottom:8px;position:relative}
-  .remove{position:absolute;right:8px;top:8px;background:#ff4d4f;border:0;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer}
-  .add{display:inline-block;margin-top:8px;background:transparent;border:1px dashed #dbe8ff;padding:8px 10px;border-radius:8px;color:var(--accent-2)}
-  /* Preview column */
-  .preview-wrap{position:relative}
-  .preview{background:linear-gradient(180deg,#ffffff,#f7fcfb);padding:18px;border-radius:10px;border:1px solid #e6eef0;min-height:200px}
-  .cv-header{display:flex;gap:14px;align-items:center}
-  .photo{width:96px;height:96px;border-radius:8px;overflow:hidden;border:2px solid #eef6f4;flex:0 0 96px;background:#f3f7f6;display:flex;align-items:center;justify-content:center;color:#9aa6a3}
-  .photo img{width:100%;height:100%;object-fit:cover}
-  .info h1{margin:0;font-size:20px;color:var(--accent)}
-  .info p{margin:6px 0;color:var(--muted);font-size:13px}
-  .section{margin-top:14px}
-  .section h3{margin:0 0 8px;color:var(--accent);font-size:13px;letter-spacing:0.6px;border-bottom:2px solid rgba(0,119,102,0.06);padding-bottom:6px}
-  .skill{display:inline-block;background:#eef8f4;color:var(--accent);padding:6px 8px;border-radius:999px;font-size:12px;margin:4px 6px 0 0}
-  footer.small{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: #111;
+      line-height: 1.5;
+    }
 
-  /* responsive */
-  @media (max-width:980px){
-    main{grid-template-columns:1fr; }
-    .preview-wrap{order:-1;margin-bottom:12px}
-  }
-</style>
+    .wrap {
+      max-width: 1080px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 22px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .controls { display: flex; gap: 12px; align-items: center; }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button:hover { opacity: 0.92; transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .btn { background: var(--accent); color: white; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--accent-2);
+      color: var(--accent-2);
+    }
+    .btn-soft {
+      background: #f0f9ff;
+      color: var(--accent-2);
+      border: 1px solid #dbeafe;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .field { margin-bottom: 16px; }
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,119,102,0.15);
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .row { display: flex; gap: 14px; }
+    .small { flex: 1; }
+
+    .list { margin-top: 12px; }
+    .item {
+      background: #f8fcfa;
+      border: 1px solid #e0f0ec;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .item:hover { background: #f0f9f7; }
+
+    .remove {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      background: var(--danger);
+      border: 0;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .add {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      background: transparent;
+      border: 1px dashed #cbdff0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .add:hover { background: #f0f9ff; border-style: solid; }
+
+    /* Preview */
+    .preview-wrap { position: relative; }
+    .preview {
+      background: linear-gradient(180deg, #ffffff, #f8fbfa);
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid #e6eef0;
+      min-height: 250px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cv-header {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #e0f0ec;
+      flex: 0 0 100px;
+      background: #f3f7f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9aa6a3;
+    }
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .info h1 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .info p {
+      margin: 4px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+    .section h3 {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid rgba(0,119,102,0.12);
+    }
+
+    .skill {
+      display: inline-block;
+      background: #e6f7f3;
+      color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin: 4px 8px 4px 0;
+      font-weight: 500;
+    }
+
+    footer.small {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      main { grid-template-columns: 1fr; }
+      .preview-wrap { order: -1; margin-bottom: 20px; }
+      header { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .row { flex-direction: column; gap: 12px; }
+      .controls { flex-wrap: wrap; justify-content: center; }
+    }
+
+    /* Animations */
+    .fade-in { animation: fadeIn 0.3s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Loading / Save Feedback */
+    .btn-saving {
+      background: var(--success);
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
 <div class="wrap">
   <header>
-    <div class="brand">Orien<span style="color:var(--accent-2)">Campus</span> — Générateur de CV</div>
+    <div class="brand">Orien<span style="color:var(--accent-2)">Campus</span></div>
     <div class="controls">
-      <button class="btn-soft" id="loadSaved">Reprendre</button>
-      <button class="btn-outline" id="clearAll">Tout effacer</button>
-      <button id="download" title="Télécharger en PDF">Télécharger PDF</button>
+      <button class="btn-soft" id="loadSaved">↺ Reprendre</button>
+      <button class="btn-outline" id="clearAll">🗑️ Tout effacer</button>
+      <button id="download">📄 Télécharger PDF</button>
     </div>
   </header>
 
   <main>
     <!-- Formulaire -->
     <section class="panel" aria-label="Formulaire de création de CV">
-      <h2>Informations personnelles</h2>
+      <h2>👤 Informations personnelles</h2>
 
       <div class="field row">
         <div style="flex:2">
@@ -77,118 +319,116 @@
         </div>
         <div style="flex:1">
           <label>Poste visé</label>
-          <input id="poste" type="text" placeholder="Ex: Technicien réseaux" />
+          <input id="poste" type="text" placeholder="Ex: Développeur web" />
         </div>
       </div>
 
       <div class="field row">
         <div class="small">
-          <label>Email</label>
+          <label>📧 Email</label>
           <input id="email" type="email" placeholder="exemple@mail.com" />
         </div>
         <div class="small">
-          <label>Téléphone</label>
+          <label>📞 Téléphone</label>
           <input id="tel" type="tel" placeholder="+226 70 00 00 00" />
         </div>
       </div>
 
       <div class="field">
-        <label>Adresse</label>
-        <input id="adresse" type="text" placeholder="Ville, Pays" />
+        <label>📍 Adresse</label>
+        <input id="adresse" type="text" placeholder="Ouagadougou, Burkina Faso" />
       </div>
 
       <div class="field">
-        <label>Photo (URL ou fichier)</label>
+        <label>📸 Photo (URL ou fichier)</label>
         <div class="row">
-          <input id="photoURL" type="text" placeholder="https://..." />
-          <input id="photoFile" type="file" accept="image/*" />
+          <input id="photoURL" type="text" placeholder="https://exemple.com/photo.jpg" />
+          <input id="photoFile" type="file" accept="image/*" style="padding: 3px;" />
         </div>
-        <div style="margin-top:6px;color:var(--muted);font-size:13px">Si vous uploadez un fichier, il sera utilisé et sauvegardé localement (dataURL).</div>
+        <div style="margin-top:8px; color:var(--muted); font-size:13px">
+          L’image sera intégrée directement dans le CV (sauvegardée localement).
+        </div>
       </div>
 
-      <div style="height:10px"></div>
-
-      <h2>Parcours scolaire</h2>
+      <h2>🎓 Parcours scolaire</h2>
       <div class="field">
         <label>École primaire</label>
         <div id="primaireList" class="list"></div>
-        <button class="add" onclick="addSchool('primaireList')">+ Ajouter primaire</button>
+        <button class="add" onclick="addSchool('primaireList')">➕ Ajouter primaire</button>
       </div>
 
       <div class="field">
         <label>Lycée — Premier cycle</label>
         <div id="premierList" class="list"></div>
-        <button class="add" onclick="addSchool('premierList')">+ Ajouter 1er cycle</button>
+        <button class="add" onclick="addSchool('premierList')">➕ Ajouter 1er cycle</button>
       </div>
 
       <div class="field">
         <label>Lycée — Second cycle</label>
         <div id="secondList" class="list"></div>
-        <button class="add" onclick="addSchool('secondList')">+ Ajouter 2nd cycle</button>
+        <button class="add" onclick="addSchool('secondList')">➕ Ajouter 2nd cycle</button>
       </div>
 
       <div class="field">
         <label>Université / Institut</label>
         <div id="uniList" class="list"></div>
-        <button class="add" onclick="addSchool('uniList')">+ Ajouter université</button>
+        <button class="add" onclick="addSchool('uniList')">➕ Ajouter université</button>
       </div>
 
-      <h2>Expériences (facultatif)</h2>
+      <h2>💼 Expériences professionnelles</h2>
       <div id="expList" class="list"></div>
-      <button class="add" onclick="addExperience()">+ Ajouter expérience</button>
+      <button class="add" onclick="addExperience()">➕ Ajouter une expérience</button>
 
-      <h2>Autres</h2>
+      <h2>🌟 Autres compétences</h2>
       <div class="field">
         <label>Compétences (séparées par des virgules)</label>
-        <input id="skills" type="text" placeholder="Ex: Communication, Excel, Python" />
+        <input id="skills" type="text" placeholder="HTML, CSS, JavaScript, Laravel, React" />
       </div>
       <div class="field">
         <label>Langues</label>
-        <input id="languages" type="text" placeholder="Ex: Français - Natif, Anglais - Intermédiaire" />
+        <input id="languages" type="text" placeholder="Français - Natif, Anglais - Intermédiaire" />
       </div>
       <div class="field">
         <label>Centres d'intérêt</label>
-        <input id="interests" type="text" placeholder="Ex: Lecture, Football" />
+        <input id="interests" type="text" placeholder="Développement, Jeux vidéo, Lecture" />
       </div>
 
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button id="saveBtn" class="btn">Sauvegarder</button>
-        <button id="previewBtn" class="btn btn-outline">Aperçu</button>
+      <div style="display:flex;gap:12px;margin-top:20px">
+        <button id="saveBtn" class="btn">💾 Sauvegarder</button>
+        <button id="previewBtn" class="btn btn-outline">👁️ Aperçu</button>
       </div>
     </section>
 
     <!-- Aperçu -->
     <aside class="preview-wrap">
-      <div class="panel preview" id="previewArea" role="region" aria-live="polite">
-        <!-- CV rendu ici -->
-        <div id="cvRender" style="opacity:0.01;transition:opacity .25s">
-          <!-- placeholder initial -->
-          <div style="text-align:center;color:var(--muted)">Cliquez sur "Aperçu" pour générer le CV</div>
+      <div class="panel preview" id="previewArea">
+        <div id="cvRender" style="opacity:0.01; transition: opacity 0.3s">
+          <div style="text-align:center; color:var(--muted); padding: 40px 0;">
+            <div style="font-size:48px; margin-bottom:16px;">📄</div>
+            Cliquez sur <strong>“Aperçu”</strong> pour voir votre CV en temps réel.
+          </div>
         </div>
       </div>
 
-      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:12px;color:var(--muted)">Aperçu dynamique · Sauvegarde locale</div>
-        <div>
-          <button class="btn-soft" id="themeBtn">Design moderne</button>
-        </div>
+      <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; font-size:13px;">
+        <span style="color:var(--muted)">Aperçu en temps réel · Données sauvegardées localement</span>
+        <button class="btn-soft" id="themeBtn" disabled>🎨 Design moderne</button>
       </div>
 
-      <footer class="small">© <span id="year"></span> OrienCampus</footer>
+      <footer class="small">© <span id="year"></span> OrienCampus — Générateur de CV intelligent</footer>
     </aside>
   </main>
 </div>
 
-<!-- html2pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
 /* ---------- Helpers & State ---------- */
 document.getElementById('year').textContent = new Date().getFullYear();
-const stateKey = 'oriencampus_cv_v1';
-let photoDataURL = null; // dataURL if user uploads file
+const stateKey = 'oriencampus_cv_v2';
+let photoDataURL = null;
 
-function uid(){ return Math.random().toString(36).slice(2,9) }
+function uid(){ return Math.random().toString(36).slice(2,9); }
 
 /* ---------- Add dynamic blocks ---------- */
 function createSchoolBlock(sectionId){
@@ -200,7 +440,7 @@ function createSchoolBlock(sectionId){
     <div class="field"><label>Établissement</label><input class="etab" placeholder="Nom de l'établissement"></div>
     <div class="row">
       <div class="small"><label>Ville</label><input class="ville" placeholder="Ville"></div>
-      <div class="small"><label>Année / Période</label><input class="annee" placeholder="Ex: 2010 - 2016"></div>
+      <div class="small"><label>Année / Période</label><input class="annee" placeholder="Ex: 2010 – 2016"></div>
     </div>
   `;
   document.getElementById(sectionId).appendChild(wrapper);
@@ -208,7 +448,7 @@ function createSchoolBlock(sectionId){
   return wrapper;
 }
 
-function addSchool(sectionId){ createSchoolBlock(sectionId) }
+function addSchool(sectionId){ createSchoolBlock(sectionId); }
 
 function createExp(){
   const id = uid();
@@ -216,23 +456,23 @@ function createExp(){
   wrapper.className = 'item block-'+id;
   wrapper.innerHTML = `
     <button class="remove" title="Supprimer" onclick="this.parentNode.remove(); saveLocal()">&times;</button>
-    <div class="field"><label>Poste</label><input class="poste" placeholder="Ex: Technicien en réseaux"></div>
+    <div class="field"><label>Poste</label><input class="poste" placeholder="Développeur backend"></div>
     <div class="field"><label>Entreprise</label><input class="entre" placeholder="Nom de l'entreprise"></div>
     <div class="row">
       <div class="small"><label>Ville</label><input class="eville" placeholder="Ville"></div>
-      <div class="small"><label>Période</label><input class="eperiode" placeholder="Ex: 2019 - 2022"></div>
+      <div class="small"><label>Période</label><input class="eperiode" placeholder="2020 – 2023"></div>
     </div>
-    <div class="field"><label>Description (facultatif)</label><textarea class="edesc" placeholder="Tâches et réalisations"></textarea></div>
+    <div class="field"><label>Description (facultatif)</label><textarea class="edesc" placeholder="Développement d'API REST avec Laravel..."></textarea></div>
   `;
   document.getElementById('expList').appendChild(wrapper);
   saveLocal();
   return wrapper;
 }
-function addExperience(){ createExp() }
+function addExperience(){ createExp(); }
 
 /* ---------- Save/Load localStorage ---------- */
 function gatherData(){
-  const data = {
+  return {
     nom: document.getElementById('nom').value || '',
     poste: document.getElementById('poste').value || '',
     email: document.getElementById('email').value || '',
@@ -249,19 +489,20 @@ function gatherData(){
     languages: document.getElementById('languages').value || '',
     interests: document.getElementById('interests').value || ''
   };
-  return data;
 }
 
 function saveLocal(){
   try{
     const data = gatherData();
     localStorage.setItem(stateKey, JSON.stringify(data));
-    // small visual feedback
-    document.getElementById('saveBtn').textContent = 'Sauvegardé ✓';
-    setTimeout(()=>document.getElementById('saveBtn').textContent = 'Sauvegarder',1200);
-  }catch(e){
-    console.error('Impossible de sauvegarder', e);
-  }
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '✅ Sauvegardé !';
+    btn.classList.add('btn-saving');
+    setTimeout(() => {
+      btn.textContent = '💾 Sauvegarder';
+      btn.classList.remove('btn-saving');
+    }, 1500);
+  }catch(e){ console.error('Erreur sauvegarde', e); }
 }
 
 function loadLocal(){
@@ -269,7 +510,6 @@ function loadLocal(){
   if(!raw) return false;
   try{
     const data = JSON.parse(raw);
-    // populate fields
     document.getElementById('nom').value = data.nom || '';
     document.getElementById('poste').value = data.poste || '';
     document.getElementById('email').value = data.email || '';
@@ -278,36 +518,20 @@ function loadLocal(){
     document.getElementById('photoURL').value = data.photoURL || '';
     photoDataURL = data.photoDataURL || null;
 
-    // lists: clear then repopulate
     ['primaireList','premierList','secondList','uniList'].forEach(id => {
       document.getElementById(id).innerHTML = '';
     });
-    if(Array.isArray(data.primaire)) data.primaire.forEach(p=>{
-      const node = createSchoolBlock('primaireList');
-      node.querySelector('.etab').value = p.etab || '';
-      node.querySelector('.ville').value = p.ville || '';
-      node.querySelector('.annee').value = p.annee || '';
-    });
-    if(Array.isArray(data.premier)) data.premier.forEach(p=>{
-      const node = createSchoolBlock('premierList');
-      node.querySelector('.etab').value = p.etab || '';
-      node.querySelector('.ville').value = p.ville || '';
-      node.querySelector('.annee').value = p.annee || '';
-    });
-    if(Array.isArray(data.second)) data.second.forEach(p=>{
-      const node = createSchoolBlock('secondList');
-      node.querySelector('.etab').value = p.etab || '';
-      node.querySelector('.ville').value = p.ville || '';
-      node.querySelector('.annee').value = p.annee || '';
-    });
-    if(Array.isArray(data.uni)) data.uni.forEach(p=>{
-      const node = createSchoolBlock('uniList');
-      node.querySelector('.etab').value = p.etab || '';
-      node.querySelector('.ville').value = p.ville || '';
-      node.querySelector('.annee').value = p.annee || '';
+
+    const lists = { primaire: 'primaireList', premier: 'premierList', second: 'secondList', uni: 'uniList' };
+    Object.entries(lists).forEach(([key, id]) => {
+      if (Array.isArray(data[key])) data[key].forEach(item => {
+        const node = createSchoolBlock(id);
+        node.querySelector('.etab').value = item.etab || '';
+        node.querySelector('.ville').value = item.ville || '';
+        node.querySelector('.annee').value = item.annee || '';
+      });
     });
 
-    // experiences
     document.getElementById('expList').innerHTML = '';
     if(Array.isArray(data.exps)) data.exps.forEach(e=>{
       const node = createExp();
@@ -351,75 +575,69 @@ function extractExps(){
 }
 
 /* ---------- Photo handling ---------- */
-const fileInput = document.getElementById('photoFile');
-fileInput.addEventListener('change', (e)=>{
+document.getElementById('photoFile').addEventListener('change', (e)=>{
   const f = e.target.files[0];
   if(!f) return;
   const reader = new FileReader();
   reader.onload = function(evt){
-    photoDataURL = evt.target.result; // base64
+    photoDataURL = evt.target.result;
     saveLocal();
-    // if preview visible regenerate
     renderPreview();
-  }
+  };
   reader.readAsDataURL(f);
 });
 
-document.getElementById('photoURL').addEventListener('change', ()=>{
-  // if user enters URL, we prefer URL over uploaded file
-  saveLocal();
-});
+document.getElementById('photoURL').addEventListener('input', saveLocal);
 
 /* ---------- Render Preview ---------- */
 function renderPreview(){
   const data = gatherData();
-  // choose image source: uploaded file > URL > placeholder
   const imageSrc = data.photoDataURL || (data.photoURL ? data.photoURL : null);
   const cv = document.getElementById('cvRender');
   let html = '';
 
-  html += `<div class="cv-header">`;
-  html += `<div class="photo">${ imageSrc ? `<img src="${escapeHtml(imageSrc)}" alt="Photo">` : '<div style="font-size:12px;color:#98a6a3">Photo</div>' }</div>`;
+  html += `<div class="cv-header fade-in">`;
+  html += `<div class="photo">${ imageSrc ? `<img src="${escapeHtml(imageSrc)}" alt="Photo">` : '<div>📸</div>' }</div>`;
   html += `<div class="info">`;
   html += `<h1>${escapeHtml(data.nom || '')}</h1>`;
-  html += `<p style="margin:6px 0 0;"><strong>${escapeHtml(data.poste||'')}</strong></p>`;
-  html += `<p style="margin:6px 0 0;color:var(--muted);font-size:13px">${escapeHtml(data.email||'')}${data.tel ? ' · '+escapeHtml(data.tel):''}</p>`;
-  if(data.adresse) html += `<p style="margin:6px 0 0;color:var(--muted);font-size:13px">${escapeHtml(data.adresse)}</p>`;
+  html += `<p><strong>${escapeHtml(data.poste||'')}</strong></p>`;
+  if(data.email || data.tel) {
+    html += `<p style="color:var(--muted); font-size:14px;">${escapeHtml(data.email||'')}${data.tel ? ' • '+escapeHtml(data.tel):''}</p>`;
+  }
+  if(data.adresse) html += `<p style="color:var(--muted); font-size:14px;">${escapeHtml(data.adresse)}</p>`;
   html += `</div></div>`;
 
-  // scolaire sections
   function renderSchool(title, arr){
     if(!arr || !arr.length) return '';
     let s = `<div class="section"><h3>${escapeHtml(title)}</h3>`;
     arr.forEach(it=>{
       if(!it.etab && !it.annee && !it.ville) return;
-      s += `<div style="margin-bottom:6px"><strong>${escapeHtml(it.etab||'')}</strong>`;
+      s += `<div style="margin-bottom:8px"><strong>${escapeHtml(it.etab||'')}</strong>`;
       if(it.ville) s += ` — ${escapeHtml(it.ville)}`;
-      if(it.annee) s += ` <span style="color:var(--muted)">(${escapeHtml(it.annee)})</span>`;
+      if(it.annee) s += ` <span style="color:var(--muted); font-size:13px;">${escapeHtml(it.annee)}</span>`;
       s += `</div>`;
     });
     s += `</div>`;
     return s;
   }
+
   html += renderSchool('École primaire', data.primaire);
   html += renderSchool('Lycée — Premier cycle', data.premier);
   html += renderSchool('Lycée — Second cycle', data.second);
   html += renderSchool('Université / Institut', data.uni);
 
-  // experiences
   if(data.exps && data.exps.length){
     html += `<div class="section"><h3>Expériences professionnelles</h3>`;
     data.exps.forEach(e=>{
       if(!e.poste && !e.entre) return;
-      html += `<div style="margin-bottom:8px"><strong>${escapeHtml(e.poste||'')}</strong> — ${escapeHtml(e.entre||'')}`;
-      if(e.periode) html += ` <span style="color:var(--muted)">(${escapeHtml(e.periode)})</span>`;
-      if(e.desc) html += `<div style="font-size:13px;color:var(--muted);margin-top:4px">${escapeHtml(e.desc)}</div>`;
+      html += `<div style="margin-bottom:12px"><strong>${escapeHtml(e.poste||'')}</strong> — <em>${escapeHtml(e.entre||'')}</em>`;
+      if(e.periode) html += ` <span style="color:var(--muted); font-size:13px;">(${escapeHtml(e.periode)})</span>`;
+      if(e.desc) html += `<div style="font-size:13px; color:var(--muted); margin-top:6px; line-height:1.5;">${escapeHtml(e.desc)}</div>`;
       html += `</div>`;
     });
     html += `</div>`;
   }
 
-  // skills languages interests
   const skills = (data.skills || '').split(',').map(s=>s.trim()).filter(Boolean);
   if(skills.length){
     html += `<div class="section"><h3>Compétences</h3>`;
@@ -428,18 +646,16 @@ function renderPreview(){
   }
 
   if(data.languages){
-    html += `<div class="section"><h3>Langues</h3><div>${escapeHtml(data.languages)}</div></div>`;
+    html += `<div class="section"><h3>Langues</h3><p>${escapeHtml(data.languages)}</p></div>`;
   }
   if(data.interests){
-    html += `<div class="section"><h3>Centres d'intérêt</h3><div>${escapeHtml(data.interests)}</div></div>`;
+    html += `<div class="section"><h3>Centres d'intérêt</h3><p>${escapeHtml(data.interests)}</p></div>`;
   }
 
   cv.innerHTML = html;
-  // make visible
   cv.style.opacity = 1;
 }
 
-/* ---------- Utilities ---------- */
 function escapeHtml(str){
   if(str === null || str === undefined) return '';
   return String(str)
@@ -459,55 +675,50 @@ document.getElementById('previewBtn').addEventListener('click', ()=>{
 document.getElementById('loadSaved').addEventListener('click', ()=>{
   const ok = loadLocal();
   if(!ok) alert('Aucune sauvegarde trouvée.');
-  else { renderPreview(); alert('Données restaurées.'); }
+  else { renderPreview(); }
 });
 document.getElementById('clearAll').addEventListener('click', ()=>{
-  if(!confirm('Supprimer toutes les données locales ?')) return;
-  localStorage.removeItem(stateKey);
-  location.reload();
+  if(confirm('Êtes-vous sûr de vouloir supprimer toutes vos données ? Cette action est irréversible.')) {
+    localStorage.removeItem(stateKey);
+    location.reload();
+  }
 });
 
 /* ---------- Download PDF ---------- */
 document.getElementById('download').addEventListener('click', ()=>{
-  // ensure preview exists
   renderPreview();
   const element = document.getElementById('cvRender');
-  // small in-page style overrides for PDF
   const opt = {
-    margin:       0.4,
-    filename:     `CV-${(document.getElementById('nom').value || 'mon-cv').replaceAll(' ','_')}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    margin: 0.5,
+    filename: `CV-${(document.getElementById('nom').value || 'utilisateur').replaceAll(' ','_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
   };
   html2pdf().set(opt).from(element).save();
 });
 
-/* ---------- Auto-save on change (light) ---------- */
-[
-  'nom','poste','email','tel','adresse','photoURL','skills','languages','interests'
-].forEach(id=>{
+/* ---------- Auto-save on change ---------- */
+['nom','poste','email','tel','adresse','photoURL','skills','languages','interests']
+.forEach(id => {
   const el = document.getElementById(id);
-  el && el.addEventListener('input', ()=>{ clearTimeout(window._sv); window._sv = setTimeout(saveLocal,600) });
+  el?.addEventListener('input', () => { 
+    clearTimeout(window._sv); 
+    window._sv = setTimeout(saveLocal, 800); 
+  });
 });
 
-/* ---------- Initial load: restore if exists ---------- */
+/* ---------- Initial load ---------- */
 (function init(){
-  loadLocal(); // try to restore silently
-  // if nothing, create one block for each section so UI isn't empty
+  const hasData = loadLocal();
   ['primaireList','premierList','secondList','uniList','expList'].forEach(id=>{
     if(document.getElementById(id).children.length === 0){
       if(id === 'expList') createExp();
       else createSchoolBlock(id);
     }
   });
-  // render preview if data exists
-  const has = localStorage.getItem(stateKey);
-  if(has) renderPreview();
+  if(hasData) renderPreview();
 })();
-
-/* ---------- small helper to save on remove etc ---------- */
-window.saveLocal = saveLocal;
 </script>
 
 </body>
