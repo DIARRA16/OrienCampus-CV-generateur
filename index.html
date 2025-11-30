@@ -1,355 +1,169 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Créez gratuitement un CV professionnel en ligne avec OrienCampus. Téléchargez en PDF.">
-    <title>OrienCampus - Générateur de CV en ligne</title>
+<meta charset="UTF-8">
+<title>Générateur de CV - OrienCampus</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Styles -->
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --light: #ecf0f1;
-            --dark: #34495e;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        html, body { height: 100%; }
-        body {
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-inner { display:flex; align-items:center; justify-content:space-between; gap:10px; }
-        .logo { font-size: 22px; font-weight: bold; }
-        .logo span { color: var(--secondary); }
-        .btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-            transition: all 0.25s;
-        }
-        .btn:hover { background-color: #2980b9; transform: translateY(-2px); }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--secondary);
-        }
-        .btn-outline:hover { background: var(--secondary); color: white; }
-        .btn-success { background-color: var(--success); }
-
-        /* Pages */
-        .page { display:none; min-height: calc(100vh - 80px); padding: 40px 0; }
-        .page-active { display:block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
-
-        /* Template Grid */
-        .templates-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
-        .template-card {
-            background:white; border-radius:10px; overflow:hidden;
-            box-shadow:0 6px 18px rgba(0,0,0,0.06);
-            cursor:pointer; transition:transform .2s;
-        }
-        .template-card:hover { transform:translateY(-6px); }
-        .template-preview {
-            height:200px; display:flex; align-items:center; justify-content:center;
-            background:#eef2f5; color:#777;
-            border-bottom:1px solid #ddd;
-        }
-
-        .form-section { background:white; padding:20px; border-radius:10px; margin-bottom:20px; }
-        .form-section h2 { color:var(--primary); margin-bottom:12px; }
-        .form-row { display:flex; gap:15px; }
-        .form-row .form-group { flex:1; }
-
-        .form-group label { font-weight:600; font-size:14px; }
-        .form-group input, textarea { width:100%; padding:10px; border-radius:6px; border:1px solid #ddd; }
-
-        .repeatable-item { background:#f4f7f9; padding:12px; border-left:4px solid var(--secondary); border-radius:6px; margin-bottom:12px; position:relative; }
-        .remove-item {
-            position:absolute; top:6px; right:6px; background:var(--danger);
-            width:24px; height:24px; border-radius:50%; color:#fff; border:none; cursor:pointer;
-        }
-
-        #cv-output {
-            max-width:800px;
-            margin:30px auto;
-            padding:20px;
-            background:white;
-            border-radius:8px;
-            box-shadow:0 6px 18px rgba(0,0,0,0.08);
-        }
-
-        @media (max-width:800px) {
-            .form-row { flex-direction:column; }
-        }
-    </style>
+<style>
+    body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; }
+    .container { width: 95%; max-width: 900px; margin: 20px auto; background:white; padding:20px; border-radius:10px; }
+    h1, h2 { color:#333; }
+    .page { display:none; }
+    .active { display:block; }
+    .btn { padding:10px 15px; border:none; background:#2b62ff; color:white; border-radius:8px; cursor:pointer; }
+    .btn-outline { background:white; border:1px solid #2b62ff; color:#2b62ff; }
+    .btn-danger { background:#ff3b3b; }
+    .form-group { margin-bottom:12px; }
+    label { font-weight:bold; }
+    input, textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:5px; }
+    .remove-item { float:right; background:#ff3b3b; color:white; border:none; width:25px; height:25px; border-radius:50%; cursor:pointer; }
+    #cv-result { padding:20px; background:white; }
+    #cv-content h2 { margin-top:18px; color:#2b62ff; }
+</style>
 </head>
+
 <body>
 
-<!-- PAGE D’ACCUEIL -->
-<section id="landing-page" class="page page-active">
-    <header>
-        <div class="container header-inner">
-            <div class="logo">Orien<span>Campus</span></div>
-            <button class="btn" onclick="showPage('templates-page')">Créer mon CV</button>
-        </div>
-    </header>
+<div class="container">
+    <h1>Générateur de CV - OrienCampus</h1>
 
-    <div class="container" style="margin-top:50px; text-align:center;">
-        <h1 style="color:var(--primary);">Créez votre CV professionnel gratuitement</h1>
-        <p style="max-width:700px; margin:10px auto;">
-            Un outil simple, gratuit et rapide pour générer un CV moderne et professionnel.
-        </p>
+    <!-- PAGE 1 : Infos personnelles -->
+    <div id="page1" class="page active">
+        <h2>Informations personnelles</h2>
+        <div class="form-group"><label>Nom</label><input id="nom"></div>
+        <div class="form-group"><label>Prénoms</label><input id="prenoms"></div>
+        <div class="form-group"><label>Email</label><input id="email"></div>
+        <div class="form-group"><label>Téléphone</label><input id="telephone"></div>
+        <div class="form-group"><label>Adresse</label><input id="adresse"></div>
+
+        <button class="btn" onclick="nextPage(1)">Suivant</button>
     </div>
-</section>
 
+    <!-- PAGE 2 : Formations -->
+    <div id="page2" class="page">
+        <h2>Formations universitaires</h2>
 
-<!-- CHOIX DU MODÈLE -->
-<section id="templates-page" class="page">
-    <header>
-        <div class="container header-inner">
-            <div class="logo">Orien<span>Campus</span></div>
-            <button class="btn btn-outline" onclick="showPage('landing-page')">← Retour</button>
-        </div>
-    </header>
+        <div id="formations"></div>
+        <button class="btn-outline" onclick="addFormation()">+ Ajouter une formation</button>
 
-    <div class="container">
-        <h1 style="text-align:center; margin:24px 0;">Choisissez un modèle</h1>
-
-        <div class="templates-grid">
-            <div class="template-card" onclick="selectTemplate('classic')">
-                <div class="template-preview">Modèle Classique</div>
-            </div>
-            <div class="template-card" onclick="selectTemplate('modern')">
-                <div class="template-preview">Modèle Moderne</div>
-            </div>
-            <div class="template-card" onclick="selectTemplate('executive')">
-                <div class="template-preview">Modèle Cadre</div>
-            </div>
-            <div class="template-card" onclick="selectTemplate('creative')">
-                <div class="template-preview">Modèle Créatif</div>
-            </div>
-        </div>
+        <br><br>
+        <button class="btn-outline" onclick="previousPage(2)">Retour</button>
+        <button class="btn" onclick="nextPage(2)">Suivant</button>
     </div>
-</section>
 
+    <!-- PAGE 3 : Expériences -->
+    <div id="page3" class="page">
+        <h2>Expériences professionnelles</h2>
 
-<!-- FORMULAIRE -->
-<section id="form-page" class="page">
-    <header>
-        <div class="container header-inner">
-            <div class="logo">Orien<span>Campus</span></div>
-            <button class="btn btn-outline" onclick="showPage('templates-page')">← Changer</button>
-        </div>
-    </header>
+        <div id="experiences"></div>
+        <button class="btn-outline" onclick="addExperience()">+ Ajouter une expérience</button>
 
-    <div class="container">
-        <h1 style="text-align:center; margin:20px 0;">Remplissez votre CV</h1>
-
-        <form id="cv-form" onsubmit="event.preventDefault(); generatePreview();">
-
-            <div class="form-section">
-                <h2>Informations personnelles</h2>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom complet *</label>
-                        <input id="nom" required />
-                    </div>
-                    <div class="form-group">
-                        <label>Poste visé *</label>
-                        <input id="poste" required />
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input id="email" required />
-                    </div>
-                    <div class="form-group">
-                        <label>Téléphone *</label>
-                        <input id="tel" required />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Adresse</label>
-                    <input id="adresse" />
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Photo (URL)</label>
-                        <input id="photo" />
-                    </div>
-                    <div class="form-group">
-                        <label>LinkedIn</label>
-                        <input id="linkedin" />
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-section">
-                <h2>Résumé *</h2>
-                <textarea id="profil" required></textarea>
-            </div>
-
-
-            <div class="form-section">
-                <h2>Expériences Professionnelles</h2>
-                <div id="experiences"></div>
-                <button class="btn btn-outline" type="button" onclick="addExperience()">+ Ajouter</button>
-            </div>
-
-
-            <div class="form-section">
-                <h2>Formations</h2>
-                <div id="formations"></div>
-                <button class="btn btn-outline" type="button" onclick="addFormation()">+ Ajouter</button>
-            </div>
-
-            <button class="btn btn-success" style="width:100%; margin-top:10px;">Générer le CV</button>
-        </form>
+        <br><br>
+        <button class="btn-outline" onclick="previousPage(3)">Retour</button>
+        <button class="btn" onclick="nextPage(3)">Générer le CV</button>
     </div>
-</section>
 
+    <!-- PAGE 4 : CV Généré -->
+    <div id="page4" class="page">
+        <h2>Aperçu du CV</h2>
+        <div id="cv-content" style="border:1px solid #ddd; padding:20px; border-radius:10px;"></div>
 
-<!-- APERÇU DU CV -->
-<section id="preview-page" class="page">
-    <header>
-        <div class="container header-inner">
-            <div class="logo">Orien<span>Campus</span></div>
-            <button class="btn btn-outline" onclick="showPage('form-page')">← Retour</button>
-        </div>
-    </header>
-
-    <div class="container">
-        <div id="cv-output"></div>
-
-        <button class="btn btn-success" onclick="downloadPDF()" style="margin-top:20px;">
-            Télécharger en PDF
-        </button>
+        <br>
+        <button class="btn-outline" onclick="previousPage(4)">Retour</button>
+        <button class="btn" onclick="downloadPDF()">Télécharger en PDF</button>
     </div>
-</section>
 
+</div>
 
-<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <script>
-let selectedTemplate = "classic";
-
-function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
-    document.getElementById(id).classList.add('page-active');
+/* ---------------- NAVIGATION ---------------- */
+function nextPage(page){
+    document.getElementById("page" + page).classList.remove("active");
+    document.getElementById("page" + (page+1)).classList.add("active");
+}
+function previousPage(page){
+    document.getElementById("page" + page).classList.remove("active");
+    document.getElementById("page" + (page-1)).classList.add("active");
 }
 
-function selectTemplate(name) {
-    selectedTemplate = name;
-    showPage('form-page');
-}
+/* ---------------- FORMATIONS ---------------- */
+function addFormation(){
+    let box = document.createElement("div");
+    box.className = "formation-item";
+    box.style.border = "1px solid #ccc";
+    box.style.padding = "10px";
+    box.style.marginTop = "10px";
+    box.style.borderRadius = "8px";
 
-function addExperience() {
-    const div = document.createElement('div');
-    div.className = 'repeatable-item';
-    div.innerHTML = `
+    box.innerHTML = `
         <button class="remove-item" onclick="this.parentNode.remove()">×</button>
-        <div class="form-group"><label>Poste</label><input class="exp-poste"></div>
-        <div class="form-group"><label>Entreprise</label><input class="exp-entreprise"></div>
-        <div class="form-group"><label>Période</label><input class="exp-periode"></div>
-        <div class="form-group"><label>Description</label><textarea class="exp-desc"></textarea></div>
+        <div class="form-group"><label>Diplôme</label><input class="dip"></div>
+        <div class="form-group"><label>Établissement</label><input class="eta"></div>
+        <div class="form-group"><label>Année</label><input class="an"></div>
     `;
-    document.getElementById('experiences').appendChild(div);
+    document.getElementById("formations").appendChild(box);
 }
 
-function addFormation() {
-    const div = document.createElement('div');
-    div.className = 'repeatable-item';
-    div.innerHTML = `
+/* ---------------- EXPERIENCES ---------------- */
+function addExperience(){
+    let box = document.createElement("div");
+    box.className = "exp-item";
+    box.style.border = "1px solid #ccc";
+    box.style.padding = "10px";
+    box.style.marginTop = "10px";
+    box.style.borderRadius = "8px";
+
+    box.innerHTML = `
         <button class="remove-item" onclick="this.parentNode.remove()">×</button>
-        <div class="form-group"><label>Diplôme</label><input class="formation-diplome"></div>
-        <div class="form-group"><label>Établissement</label><input class="formation-ecole"></div>
-        <div class="form-group"><label>Période</label><input class="formation-periode"></input></div>
+        <div class="form-group"><label>Poste</label><input class="poste"></div>
+        <div class="form-group"><label>Entreprise</label><input class="entre"></div>
+        <div class="form-group"><label>Année</label><input class="anexp"></div>
     `;
-    document.getElementById('formations').appendChild(div);
+    document.getElementById("experiences").appendChild(box);
 }
 
-function generatePreview() {
-    const nom = document.getElementById('nom').value;
-    const poste = document.getElementById('poste').value;
-    const email = document.getElementById('email').value;
-    const tel = document.getElementById('tel').value;
-    const adresse = document.getElementById('adresse').value;
-    const photo = document.getElementById('photo').value;
-    const profil = document.getElementById('profil').value;
+/* ---------------- GENERATION CV ---------------- */
+function nextPage(page){
+    document.getElementById("page"+page).classList.remove("active");
+    document.getElementById("page"+(page+1)).classList.add("active");
 
-    let html = `
-        <h1>${nom}</h1>
-        <h3>${poste}</h3>
+    if(page === 3){ generateCV(); }
+}
 
-        ${photo ? <img src="${photo}" style="width:120px;height:120px;border-radius:6px;margin:10px 0;"> : ""}
-        
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Téléphone:</strong> ${tel}</p>
-        <p><strong>Adresse:</strong> ${adresse}</p>
+function generateCV(){
+    let cv = document.getElementById("cv-content");
+    cv.innerHTML = `
+        <h1>${document.getElementById("nom").value} ${document.getElementById("prenoms").value}</h1>
+        <p><b>Email :</b> ${document.getElementById("email").value}</p>
+        <p><b>Téléphone :</b> ${document.getElementById("telephone").value}</p>
+        <p><b>Adresse :</b> ${document.getElementById("adresse").value}</p>
 
-        <h2>Profil</h2>
-        <p>${profil}</p>
-
-        <h2>Expériences Professionnelles</h2>
+        <h2>Formations</h2>
     `;
 
-    document.querySelectorAll('.repeatable-item').forEach((exp, i) => {
-        const poste = exp.querySelector('.exp-poste').value;
-        const entreprise = exp.querySelector('.exp-entreprise').value;
-        const periode = exp.querySelector('.exp-periode').value;
-        const desc = exp.querySelector('.exp-desc').value;
-
-        html += <p><strong>${poste}</strong> — ${entreprise} (${periode})<br>${desc}</p>;
+    document.querySelectorAll(".formation-item").forEach(f => {
+        cv.innerHTML += `
+            <p><b>${f.querySelector(".dip").value}</b> - 
+            ${f.querySelector(".eta").value} (${f.querySelector(".an").value})</p>
+        `;
     });
 
-    html += <h2>Formations</h2>;
-    document.querySelectorAll('#formations .repeatable-item').forEach(f => {
-        const diplome = f.querySelector('.formation-diplome').value;
-        const ecole = f.querySelector('.formation-ecole').value;
-        const periode = f.querySelector('.formation-periode').value;
-
-        html += <p><strong>${diplome}</strong> — ${ecole} (${periode})</p>;
+    cv.innerHTML += `<h2>Expériences professionnelles</h2>`;
+    document.querySelectorAll(".exp-item").forEach(e => {
+        cv.innerHTML += `
+            <p><b>${e.querySelector(".poste").value}</b> - 
+            ${e.querySelector(".entre").value} (${e.querySelector(".anexp").value})</p>
+        `;
     });
-
-    document.getElementById('cv-output').innerHTML = html;
-
-    showPage('preview-page');
 }
 
-function downloadPDF() {
-    alert("Fonction PDF en construction. Je peux l'ajouter complètement si tu veux.");
+/* ---------------- PDF ---------------- */
+function downloadPDF(){
+    let element = document.getElementById("cv-content");
+    html2pdf().from(element).save("MonCV.pdf");
 }
 </script>
 
