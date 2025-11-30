@@ -6,20 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-    body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; }
+    body { font-family: Arial, sans-serif; background:#f0f0f0; margin:0; padding:0; }
     .container { width: 95%; max-width: 900px; margin: 20px auto; background:white; padding:20px; border-radius:10px; }
-    h1, h2 { color:#333; }
     .page { display:none; }
     .active { display:block; }
     .btn { padding:10px 15px; border:none; background:#2b62ff; color:white; border-radius:8px; cursor:pointer; }
-    .btn-outline { background:white; border:1px solid #2b62ff; color:#2b62ff; }
-    .btn-danger { background:#ff3b3b; }
+    .btn-outline { padding:10px 15px; border:1px solid #2b62ff; color:#2b62ff; background:white; border-radius:8px; cursor:pointer; }
     .form-group { margin-bottom:12px; }
-    label { font-weight:bold; }
-    input, textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:5px; }
+    input { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; }
+    .block { border:1px solid #ccc; padding:10px; margin-top:10px; border-radius:6px; background:#fafafa; }
     .remove-item { float:right; background:#ff3b3b; color:white; border:none; width:25px; height:25px; border-radius:50%; cursor:pointer; }
-    #cv-result { padding:20px; background:white; }
-    #cv-content h2 { margin-top:18px; color:#2b62ff; }
 </style>
 </head>
 
@@ -28,7 +24,7 @@
 <div class="container">
     <h1>Générateur de CV - OrienCampus</h1>
 
-    <!-- PAGE 1 : Infos personnelles -->
+    <!-- PAGE 1 -->
     <div id="page1" class="page active">
         <h2>Informations personnelles</h2>
         <div class="form-group"><label>Nom</label><input id="nom"></div>
@@ -36,25 +32,38 @@
         <div class="form-group"><label>Email</label><input id="email"></div>
         <div class="form-group"><label>Téléphone</label><input id="telephone"></div>
         <div class="form-group"><label>Adresse</label><input id="adresse"></div>
-
+        
         <button class="btn" onclick="nextPage(1)">Suivant</button>
     </div>
 
-    <!-- PAGE 2 : Formations -->
+    <!-- PAGE 2 -->
     <div id="page2" class="page">
-        <h2>Formations universitaires</h2>
+        <h2>Votre parcours scolaire</h2>
 
-        <div id="formations"></div>
-        <button class="btn-outline" onclick="addFormation()">+ Ajouter une formation</button>
+        <h3>École primaire</h3>
+        <div id="primaire"></div>
+        <button class="btn-outline" onclick="addBlock('primaire')">+ Ajouter un primaire</button>
+
+        <h3>Lycée – Premier cycle</h3>
+        <div id="premierCycle"></div>
+        <button class="btn-outline" onclick="addBlock('premierCycle')">+ Ajouter un 1er cycle</button>
+
+        <h3>Lycée – Second cycle</h3>
+        <div id="secondCycle"></div>
+        <button class="btn-outline" onclick="addBlock('secondCycle')">+ Ajouter un 2nd cycle</button>
+
+        <h3>Université / Institut</h3>
+        <div id="universite"></div>
+        <button class="btn-outline" onclick="addBlock('universite')">+ Ajouter une formation universitaire</button>
 
         <br><br>
         <button class="btn-outline" onclick="previousPage(2)">Retour</button>
         <button class="btn" onclick="nextPage(2)">Suivant</button>
     </div>
 
-    <!-- PAGE 3 : Expériences -->
+    <!-- PAGE 3 -->
     <div id="page3" class="page">
-        <h2>Expériences professionnelles</h2>
+        <h2>Expériences professionnelles (facultatif)</h2>
 
         <div id="experiences"></div>
         <button class="btn-outline" onclick="addExperience()">+ Ajouter une expérience</button>
@@ -64,106 +73,107 @@
         <button class="btn" onclick="nextPage(3)">Générer le CV</button>
     </div>
 
-    <!-- PAGE 4 : CV Généré -->
+    <!-- PAGE 4 -->
     <div id="page4" class="page">
         <h2>Aperçu du CV</h2>
-        <div id="cv-content" style="border:1px solid #ddd; padding:20px; border-radius:10px;"></div>
+        <div id="cv-content" style="padding:15px; background:white; border:1px solid #ccc; border-radius:8px;"></div>
 
         <br>
         <button class="btn-outline" onclick="previousPage(4)">Retour</button>
         <button class="btn" onclick="downloadPDF()">Télécharger en PDF</button>
     </div>
-
 </div>
 
+<!-- HTML2PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-/* ---------------- NAVIGATION ---------------- */
+/* PAGE SYSTEM */
 function nextPage(page){
-    document.getElementById("page" + page).classList.remove("active");
-    document.getElementById("page" + (page+1)).classList.add("active");
-}
-function previousPage(page){
-    document.getElementById("page" + page).classList.remove("active");
-    document.getElementById("page" + (page-1)).classList.add("active");
+    document.getElementById("page"+page).classList.remove("active");
+    document.getElementById("page"+(page+1)).classList.add("active");
+    if(page === 3){ generateCV(); }
 }
 
-/* ---------------- FORMATIONS ---------------- */
-function addFormation(){
+function previousPage(page){
+    document.getElementById("page"+page).classList.remove("active");
+    document.getElementById("page"+(page-1)).classList.add("active");
+}
+
+/* ADD SCHOOL BLOCK */
+function addBlock(section){
     let box = document.createElement("div");
-    box.className = "formation-item";
-    box.style.border = "1px solid #ccc";
-    box.style.padding = "10px";
-    box.style.marginTop = "10px";
-    box.style.borderRadius = "8px";
+    box.className = "block";
 
     box.innerHTML = `
         <button class="remove-item" onclick="this.parentNode.remove()">×</button>
-        <div class="form-group"><label>Diplôme</label><input class="dip"></div>
-        <div class="form-group"><label>Établissement</label><input class="eta"></div>
-        <div class="form-group"><label>Année</label><input class="an"></div>
+        <div class="form-group"><label>Établissement</label><input class="etab"></div>
+        <div class="form-group"><label>Ville</label><input class="ville"></div>
+        <div class="form-group"><label>Année</label><input class="annee"></div>
     `;
-    document.getElementById("formations").appendChild(box);
+    document.getElementById(section).appendChild(box);
 }
 
-/* ---------------- EXPERIENCES ---------------- */
+/* EXPERIENCES */
 function addExperience(){
     let box = document.createElement("div");
-    box.className = "exp-item";
-    box.style.border = "1px solid #ccc";
-    box.style.padding = "10px";
-    box.style.marginTop = "10px";
-    box.style.borderRadius = "8px";
+    box.className = "block";
 
     box.innerHTML = `
         <button class="remove-item" onclick="this.parentNode.remove()">×</button>
-        <div class="form-group"><label>Poste</label><input class="poste"></div>
+        <div class="form-group"><label>Poste occupé</label><input class="poste"></div>
         <div class="form-group"><label>Entreprise</label><input class="entre"></div>
         <div class="form-group"><label>Année</label><input class="anexp"></div>
     `;
     document.getElementById("experiences").appendChild(box);
 }
 
-/* ---------------- GENERATION CV ---------------- */
-function nextPage(page){
-    document.getElementById("page"+page).classList.remove("active");
-    document.getElementById("page"+(page+1)).classList.add("active");
-
-    if(page === 3){ generateCV(); }
-}
-
+/* GENERATE CV */
 function generateCV(){
     let cv = document.getElementById("cv-content");
     cv.innerHTML = `
-        <h1>${document.getElementById("nom").value} ${document.getElementById("prenoms").value}</h1>
-        <p><b>Email :</b> ${document.getElementById("email").value}</p>
-        <p><b>Téléphone :</b> ${document.getElementById("telephone").value}</p>
-        <p><b>Adresse :</b> ${document.getElementById("adresse").value}</p>
-
-        <h2>Formations</h2>
+        <h1>${nom.value} ${prenoms.value}</h1>
+        <p><b>Email :</b> ${email.value}</p>
+        <p><b>Téléphone :</b> ${telephone.value}</p>
+        <p><b>Adresse :</b> ${adresse.value}</p>
     `;
 
-    document.querySelectorAll(".formation-item").forEach(f => {
-        cv.innerHTML += `
-            <p><b>${f.querySelector(".dip").value}</b> - 
-            ${f.querySelector(".eta").value} (${f.querySelector(".an").value})</p>
-        `;
-    });
+    function addSection(title, id){
+        let items = document.querySelectorAll("#"+id+" .block");
+        if(items.length === 0) return;
 
-    cv.innerHTML += `<h2>Expériences professionnelles</h2>`;
-    document.querySelectorAll(".exp-item").forEach(e => {
-        cv.innerHTML += `
-            <p><b>${e.querySelector(".poste").value}</b> - 
-            ${e.querySelector(".entre").value} (${e.querySelector(".anexp").value})</p>
-        `;
-    });
+        cv.innerHTML += `<h2>${title}</h2>`;
+        items.forEach(b => {
+            cv.innerHTML += `
+                <p><b>${b.querySelector(".etab").value}</b> – 
+                ${b.querySelector(".ville").value} 
+                (${b.querySelector(".annee").value})</p>
+            `;
+        });
+    }
+
+    addSection("École primaire", "primaire");
+    addSection("Lycée – Premier cycle", "premierCycle");
+    addSection("Lycée – Second cycle", "secondCycle");
+    addSection("Université / Institut", "universite");
+
+    /* EXPERIENCES */
+    let exp = document.querySelectorAll("#experiences .block");
+    if(exp.length > 0){
+        cv.innerHTML += `<h2>Expériences professionnelles</h2>`;
+        exp.forEach(e => {
+            cv.innerHTML += `
+                <p><b>${e.querySelector(".poste").value}</b> – 
+                ${e.querySelector(".entre").value} 
+                (${e.querySelector(".anexp").value})</p>
+            `;
+        });
+    }
 }
 
-/* ---------------- PDF ---------------- */
+/* PDF */
 function downloadPDF(){
-    let element = document.getElementById("cv-content");
-    html2pdf().from(element).save("MonCV.pdf");
+    html2pdf().from(document.getElementById("cv-content")).save("MonCV.pdf");
 }
 </script>
 
